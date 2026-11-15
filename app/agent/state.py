@@ -18,6 +18,7 @@ class CaseState(TypedDict, total=False):
     intent: str
     order_id: str | None
     claimed_amount: float | None
+    order_choices: list[dict] | None  # no order ID given: merchant's own recent payments to tap (from a tool)
     language: str
 
     evidence: dict                  # {tool_name: {arg_key: result}} - only tool results, never LLM text

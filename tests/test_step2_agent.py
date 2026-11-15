@@ -141,8 +141,33 @@ def test_phone_digits_never_stored_or_logged():
 
 
 def test_missing_order_id_asks_for_it():
+    """No order ID: verify first, then only a read-only list of THIS merchant's recent payments."""
     s = run_case("My money didn't come", "M1001", "0001", llm=OfflineLLM())
-    assert s["status"] == "needs_info" and not _events(s, "tool")
+    assert s["status"] == "needs_info"
+    assert [e["name"] for e in _events(s, "tool")] == ["verify_merchant", "get_merchant", "list_recent_transactions"]
+    assert s["order_choices"] and all(c["order_id"].startswith("ORD-10") for c in s["order_choices"])
+    assert "ORD-" not in s["reply"] and "₹" not in s["reply"]      # list is shown as buttons, not in text
+
+
+def test_missing_order_id_filters_by_amount_and_tap_resolves():
+    from app.agent.graph import continue_case
+    s = run_case("சார், ஒரு customer 12000 ரூபாய் ரெண்டு தடவை கட்டிட்டாருன்னு சொல்றாரு. கொஞ்சம் check பண்ணுங்க.",
+                 "M1002", "0002", llm=OfflineLLM())
+    assert s["status"] == "needs_info" and s["language"] == "ta-IN"
+    assert sorted(c["order_id"] for c in s["order_choices"]) == ["ORD-2001", "ORD-2002"]
+    s = continue_case(s["case_id"], "ORD-2002", llm=OfflineLLM())     # merchant taps the later one
+    assert s["status"] == "waiting_approval" and s["policy_decision"]["rule_id"] == "R-22"
+    assert s["proposed_action"]["params"]["order_id"] == "ORD-2002"     # later charge refunded, ORD-2001 kept
+    # identity is not re-checked on the follow-up (PIN was dropped), and no extra failed attempt is counted
+    assert ms._VERIFY_FAILURES.get("M1002", 0) == 0
+
+
+def test_missing_order_id_with_wrong_pin_shows_nothing():
+    s = run_case("A customer paid 12000 twice", "M1002", "9999", llm=OfflineLLM())
+    assert s["status"] == "escalated" and s["policy_decision"]["rule_id"] == "G-02"
+    assert not s.get("order_choices")
+    assert "list_recent_transactions" not in [e["name"] for e in _events(s, "tool")]
+    assert "ORD-200" not in _blob(s)
 
 
 def test_prompt_injection_cannot_switch_merchant():

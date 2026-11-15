@@ -5,7 +5,8 @@ import { inr } from "../events.js";
 const load = (k, d) => { try { return localStorage.getItem(k) ?? d; } catch { return d; } };
 const save = (k, v) => { try { localStorage.setItem(k, v); } catch { /* private mode */ } };
 
-export default function OpsPanel({ token, setToken, onDecided, onOpen, refreshKey }) {
+// Rendered inside the timeline's Ops tab. Stays mounted (hidden) so the tab badge keeps counting.
+export default function OpsPanel({ token, setToken, onDecided, onOpen, refreshKey, onCount, hidden }) {
   const [items, setItems] = useState([]);
   const [reviewer, setReviewer] = useState(() => load("msa.reviewer", ""));
   const [err, setErr] = useState("");
@@ -17,7 +18,7 @@ export default function OpsPanel({ token, setToken, onDecided, onOpen, refreshKe
     async function tick() {
       try {
         const a = await api.approvals(token);
-        if (!stop) { setItems(a); setErr(""); }
+        if (!stop) { setItems(a); setErr(""); onCount?.(a.length); }
       } catch (e) {
         if (!stop) setErr(e.status === 401 ? "Ops token rejected. Check it below." : e.message);
       }
@@ -32,7 +33,9 @@ export default function OpsPanel({ token, setToken, onDecided, onOpen, refreshKe
     setBusy(item.case_id + decision);
     try {
       await api.decide(token, item.case_id, decision, reviewer.trim(), item.evidence_hash);
-      setItems((xs) => xs.filter((x) => x.case_id !== item.case_id));
+      const left = items.filter((x) => x.case_id !== item.case_id);
+      setItems(left);
+      onCount?.(left.length);
       onDecided(item.case_id);
     } catch (e) {
       setErr(e.message);
@@ -42,11 +45,7 @@ export default function OpsPanel({ token, setToken, onDecided, onOpen, refreshKe
   }
 
   return (
-    <section className="panel ops-panel" aria-label="Operations approvals">
-      <div className="panel-head">
-        <h2>Ops approvals</h2>
-        <span className={`count ${items.length ? "on" : ""}`}>{items.length}</span>
-      </div>
+    <div className="ops-embedded" role="tabpanel" aria-label="Operations approvals" hidden={hidden}>
 
       <div className="reviewer">
         <label htmlFor="reviewer">Reviewer</label>
@@ -71,7 +70,7 @@ export default function OpsPanel({ token, setToken, onDecided, onOpen, refreshKe
         )}
         {items.map((it) => <Card key={it.case_id} it={it} busy={busy} onDecide={decide} onOpen={onOpen} />)}
       </div>
-    </section>
+    </div>
   );
 }
 

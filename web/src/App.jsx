@@ -3,7 +3,6 @@ import { api } from "./api.js";
 import TopBar from "./components/TopBar.jsx";
 import Chat, { demoPin } from "./components/Chat.jsx";
 import Timeline from "./components/Timeline.jsx";
-import OpsPanel from "./components/OpsPanel.jsx";
 import CustomerPhone from "./components/CustomerPhone.jsx";
 
 const DEFAULT_TOKEN = import.meta.env.VITE_OPS_TOKEN || "demo-ops-token";
@@ -202,8 +201,8 @@ export default function App() {
           <CustomerPhone tabs={tabs} vpa={vpa} setVpa={setVpa} opsToken={token}
             onOpenCase={openCase} onDecided={onDecided} onError={setError} />
         )}
-        <Timeline caseId={caseId} view={view} events={events} />
-        <OpsPanel token={token} setToken={setToken} onDecided={onDecided} onOpen={openCase} refreshKey={opsKey} />
+        <Timeline caseId={caseId} view={view} events={events}
+          ops={{ token, setToken, onDecided, onOpen: openCase, refreshKey: opsKey }} merchants={merchants} />
       </main>
     </div>
   );

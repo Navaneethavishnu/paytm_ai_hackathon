@@ -54,6 +54,12 @@ export const api = {
   events: (id, after) => req(`/cases/${id}/events?after=${after}`),
 
   approvals: (token) => req("/approvals", { headers: ops(token) }),
+  history: (token, { mid, status } = {}) => {
+    const q = new URLSearchParams();
+    if (mid) q.set("mid", mid);
+    if (status) q.set("status", status);
+    return req(`/cases${q.toString() ? "?" + q : ""}`, { headers: ops(token) });
+  },
   decide: (token, id, decision, reviewer, hash) =>
     req(`/approvals/${id}`, {
       method: "POST", headers: ops(token),

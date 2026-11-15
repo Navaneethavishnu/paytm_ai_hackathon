@@ -4,17 +4,19 @@
 <h2>Tested for reliability, not just a happy path</h2>
 </div>
 <div class="row" style="gap:24px;">
-<div class="card grow rise" style="--i:0; padding:28px; gap:12px;"><p class="big">165</p><p class="txt">automated tests pass, with the AI mocked so they are deterministic</p></div>
+<div class="card grow rise" style="--i:0; padding:28px; gap:12px;"><p class="big">184</p><p class="txt">automated tests pass, with the AI mocked so they are deterministic</p></div>
 <div class="card grow rise" style="--i:1; padding:28px; gap:12px;"><p class="big">150/150</p><p class="txt">repeat runs pass: 15 scenarios × 10, with cached Sarvam answers</p></div>
 <div class="card grow rise" style="--i:2; padding:28px; gap:12px;"><p class="big" style="color:#0B6E61;">300/300</p><p class="txt">chaos runs with 25% of system calls failing: no crash, never a double payout or refund</p></div>
 </div>
 <div class="col fade" style="--i:4; gap:14px;">
-<p class="t">15 situations handled</p>
+<p class="t">15 demo situations, plus 13 more hidden in 130 payments across 12 merchants</p>
 <div class="row" style="gap:6px; height:64px;">
-<div style="flex:10; background:#0A5FC2; border-radius:12px 0 0 12px; display:flex; align-items:center; padding-left:24px;"><p style="font-size:26px; font-weight:700; color:#F6F8FB;">10 closed by the agent</p></div>
-<div style="flex:5; background:#FFD9AE; border-radius:0 12px 12px 0; display:flex; align-items:center; padding-left:24px;"><p style="font-size:26px; font-weight:700; color:#6E3500;">5 handed to a human</p></div>
+<div style="flex:8; background:#0A5FC2; border-radius:12px 0 0 12px; display:flex; align-items:center; padding-left:20px;"><p style="font-size:26px; font-weight:700; color:#F6F8FB;">8 fully automatic</p></div>
+<div style="flex:3; background:#FFD9AE; display:flex; align-items:center; padding-left:16px;"><p style="font-size:26px; font-weight:700; color:#6E3500;">3 after approval</p></div>
+<div style="flex:3; background:#F6C9CD; display:flex; align-items:center; padding-left:16px;"><p style="font-size:26px; font-weight:700; color:#7E1620;">3 escalated</p></div>
+<div style="flex:1.4; background:#E4E9F1; border-radius:0 12px 12px 0; display:flex; align-items:center; padding-left:14px;"><p style="font-size:24px; font-weight:700; color:#33405A;">1 asks</p></div>
 </div>
 </div>
 <div class="foot"><p class="foot-l">Speed: live Sarvam 9–17 s per case · demo cache about 0.03 s · reply about 0.2 s</p><p class="pg"></p></div>
-<aside>Be precise: the 150 repeat runs replay cached Sarvam answers, so they prove the code is reliable, not that the model always understands. The chaos test randomly fails a quarter of system calls and checks money safety: never more than one refund per transaction and never more than one payout retry.</aside>
+<aside>All three numbers were re-run on 15 November on the final code. Be precise: the 150 repeat runs replay cached Sarvam answers, so they prove the code is reliable, not that the model always understands. The chaos test randomly fails a quarter of system calls and checks money safety: never more than one refund per transaction and never more than one payout retry. The extra history (M1007 to M1012) adds R-08, R-23 and G-06 examples.</aside>
 </section>

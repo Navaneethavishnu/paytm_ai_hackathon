@@ -195,6 +195,7 @@ h3 {
 </div>
 <aside>Open with the problem in one line, then the rule we built around: the AI proposes, the policy engine decides, the verifier confirms. All data and systems in this prototype are synthetic mocks shaped like Paytm’s public payment-gateway APIs.</aside>
 </section>
+
 <section id="problem">
 <div class="head">
 <p class="eyebrow">THE PROBLEM</p>
@@ -228,6 +229,7 @@ h3 {
 <div class="foot"><p class="foot-l">Merchant Success AI</p><p class="pg"></p></div>
 <aside>These are everyday problems for small merchants: a tiffin shop, a mobile store, a hotel. Today each one becomes a support ticket. Don’t quote percentages here; we haven’t measured real ticket volumes.</aside>
 </section>
+
 <section id="steps" class="alt" style="gap:40px;">
 <div class="head">
 <p class="eyebrow">THE AI TEAMMATE</p>
@@ -256,6 +258,7 @@ h3 {
 <div class="foot"><p class="foot-l">Purple = AI · grey = plain code · blue = policy rules · green = verification</p><p class="pg"></p></div>
 <aside>The AI appears in only three places: understanding the message, choosing which read-only lookups to run, and phrasing the reply. Everything that touches money or permissions is plain code. If identity fails, the agent makes zero lookups and escalates.</aside>
 </section>
+
 <section id="principle" style="background:#DCEBFB; gap:56px;">
 <p class="eyebrow">THE RULE WE BUILT AROUND</p>
 <div class="col" style="gap:8px;">
@@ -270,6 +273,7 @@ h3 {
 </div>
 <aside>This is the one sentence to remember. The model is useful for language and judgement about where to look, but it never holds the keys: permissions are deterministic, and every action is checked by reading the system again.</aside>
 </section>
+
 <section id="architecture" class="alt" style="gap:40px;">
 <div class="head">
 <p class="eyebrow">ARCHITECTURE</p>
@@ -280,37 +284,38 @@ h3 {
 <x-icon name="Globe" class="ic ic-blue"></x-icon>
 <h3>Web app</h3>
 <p class="small">React + Vite, one page on the projector</p>
-<p class="pill code" style="align-self:stretch;">Merchant / customer chat</p>
-<p class="pill code" style="align-self:stretch;">Live agent timeline</p>
-<p class="pill code" style="align-self:stretch;">Ops approval queue</p>
+<p class="pill code" style="align-self:stretch;">Merchant / customer phone</p>
+<p class="pill code" style="align-self:stretch;">Live agent graph + cards</p>
+<p class="pill code" style="align-self:stretch;">Ops approvals + history</p>
 </div>
 <x-shape kind="arrow-right" class="fade" style="--i:1; width:48px; height:26px; background:#8D9AB2;"></x-shape>
 <div class="col" style="width:450px; gap:0;">
 <div class="card rise" style="--i:2; gap:8px;">
 <p class="t">FastAPI</p>
-<p class="small">Polling timeline, Ops token, rate limits, CORS, size limits</p>
+<p class="small">Live timeline, case history, Ops token, rate limits, CORS</p>
 </div>
 <div style="display:flex; justify-content:center; padding:10px 0;"><x-shape kind="arrow-down" class="fade" style="--i:3; width:26px; height:44px; background:#8D9AB2;"></x-shape></div>
 <div class="card rise" style="--i:4; gap:8px; border-color:#0A5FC2; background:#F2F7FE;">
 <p class="t">LangGraph agent</p>
-<p class="small">16-node state machine. Pauses for Ops or the customer and resumes from a saved checkpoint.</p>
+<p class="small">17-node state machine. Pauses for Ops or the customer and resumes from a saved checkpoint.</p>
 </div>
 </div>
 <x-shape kind="arrow-right" class="fade" style="--i:5; width:48px; height:26px; background:#8D9AB2;"></x-shape>
 <div class="col grow" style="gap:14px;">
 <div class="card rise" style="--i:5; padding:18px 24px; gap:4px; border-color:#B9A3EA;"><p class="t">Sarvam AI</p><p class="small">sarvam-105b · 105b-conversations · Saaras v4</p></div>
 <div class="card rise" style="--i:6; padding:18px 24px; gap:4px; border-color:#9DC3EE;"><p class="t">Policy engine</p><p class="small">policy.yaml with rule IDs, validated at load</p></div>
-<div class="card rise" style="--i:7; padding:18px 24px; gap:4px;"><p class="t">Mock payment systems</p><p class="small">Paytm PG response shapes, synthetic data</p></div>
+<div class="card rise" style="--i:7; padding:18px 24px; gap:4px;"><p class="t">Mock payment systems</p><p class="small">Paytm PG shapes · 130 synthetic payments, 12 merchants</p></div>
 <div class="card rise" style="--i:8; padding:18px 24px; gap:4px;"><p class="t">SQLite</p><p class="small">Records, masked audit log, checkpoints</p></div>
 <div class="card rise" style="--i:9; padding:18px 24px; gap:4px;"><p class="t">Mini-RAG</p><p class="small">ChromaDB over 8 docs, for citations only</p></div>
 </div>
 </div>
 <aside>Keep it simple on purpose: one process, SQLite, no multi-agent setup. The web app only talks HTTP, so a mobile app could reuse the same API. All payment systems are mocks; nothing calls real Paytm APIs.</aside>
 </section>
+
 <section id="graph" style="gap:40px;">
 <div class="head">
 <p class="eyebrow">THE STATE MACHINE</p>
-<h2>Every case follows explicit nodes and edges</h2>
+<h2>Every case follows 17 explicit nodes and their edges</h2>
 </div>
 <div class="lane rise" style="--i:0;">
 <p class="node node-ai">intake</p>
@@ -348,6 +353,13 @@ h3 {
 <p class="small">ticket for a specialist, generic reply that reveals nothing</p>
 </div>
 <div class="lane rise" style="--i:5;">
+<p class="lane-label" style="color:#33405A;">No order ID</p>
+<p class="node">suggest_orders</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node node-ai">respond</p>
+<p class="small">shows the merchant’s own recent payments to tap</p>
+</div>
+<div class="lane rise" style="--i:6;">
 <p class="lane-label" style="color:#6A3DC0;">Customer (Case 4)</p>
 <p class="node">ask_customer</p>
 <x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
@@ -359,6 +371,7 @@ h3 {
 <div class="foot"><p class="foot-l">PAUSE = LangGraph interrupt(): state saved in a SQLite checkpoint, resumes even after a restart</p><p class="pg"></p></div>
 <aside>Purple nodes use the AI; everything else is code. policy_gate is the only place the auto / approval / escalate decision is made. Unverified identity skips investigate entirely and goes straight to the policy gate, which escalates under G-02.</aside>
 </section>
+
 <section id="policy" class="alt" style="gap:40px;">
 <div class="head">
 <p class="eyebrow">POLICY TIERS</p>
@@ -377,6 +390,7 @@ h3 {
 <div class="foot"><p class="foot-l">policy/policy.yaml · first matching rule wins · validated at load · a limit change is one line</p><p class="pg"></p></div>
 <aside>The AI never reads this file to decide anything. Evidence signals such as duplicate_verified are set by code from tool results. Unknown actions or an unmatched rule fail closed into escalation. Thresholds are illustrative for the demo.</aside>
 </section>
+
 <section id="cases" style="gap:40px;">
 <div class="head">
 <p class="eyebrow">FOUR DEMO CASES</p>
@@ -416,27 +430,48 @@ h3 {
 <p class="small">Refunded, verified, both sides notified</p>
 </div>
 </div>
-<div class="foot"><p class="foot-l">15 situations handled in total: 10 closed by the agent, 5 safely handed to a human</p><p class="pg"></p></div>
+<div class="foot"><p class="foot-l">15 demo situations: 8 fully automatic · 3 after a human approves · 3 escalated · 1 asks for details</p><p class="pg"></p></div>
 <aside>Walk left to right: automatic, human approval, safe stop, proactive. Case 3 matters as much as Case 1: knowing when to stop is part of being a good teammate. In Case 3 the reply never says the order exists.</aside>
 </section>
+
 <section id="demo" class="alt" style="gap:40px;">
 <div class="head">
 <p class="eyebrow">THE LIVE APP</p>
-<h2>Every step is visible on a live timeline</h2>
+<h2>Watch the agent’s path light up, step by step</h2>
 </div>
 <div class="row" style="gap:48px;">
 <div class="col rise" style="--i:0; gap:16px;">
-<img src="images/case2-ops-approval.png" alt="App screenshot for Case 2: merchant chat, agent timeline ending in Policy R-22 approval, and an Ops card to approve the ₹12,000 refund with its evidence hash" style="width:808px; height:481px; object-fit:contain; border-radius:16px; border:2px solid #C5D2E3; background:#FCFDFE;">
-<p class="small"><b style="color:#0E1B33;">Case 2:</b> the timeline stops at R-22, and Ops sees the evidence pack and its hash</p>
+<img src="images/case2-graph-ops-pending.png" alt="App screenshot for Case 2: the graph view lights the path from Understand to Policy gate R-22, then Evidence pack, and Ops approval pulses while the Ops approvals tab shows 1 pending" style="width:808px; height:481px; object-fit:contain; border-radius:16px; border:2px solid #C5D2E3; background:#FCFDFE;">
+<p class="small"><b style="color:#0E1B33;">Case 2:</b> the path stops at R-22 and “Ops approval” pulses until a human decides</p>
 </div>
 <div class="col rise" style="--i:2; gap:16px;">
-<img src="images/case4-customer-ask.png" alt="App screenshot for Case 4: the customer’s phone asks Keep both or Refund one, while the timeline shows the duplicate check and a heads-up to the merchant" style="width:808px; height:481px; object-fit:contain; border-radius:16px; border:2px solid #C5D2E3; background:#FCFDFE;">
-<p class="small"><b style="color:#0E1B33;">Case 4:</b> the customer is asked to keep both or refund one; the merchant gets a heads-up</p>
+<img src="images/case4-graph-customer.png" alt="App screenshot for Case 4: the graph shows the customer branch, Ask customer then Customer says refund one, then Policy gate R-21, Execute, Verify result and Notify both, with both notices on the right" style="width:808px; height:481px; object-fit:contain; border-radius:16px; border:2px solid #C5D2E3; background:#FCFDFE;">
+<p class="small"><b style="color:#0E1B33;">Case 4:</b> the customer branch, then R-21, refund, verify, and both sides notified</p>
 </div>
 </div>
-<div class="foot"><p class="foot-l">Left: merchant or customer phone · middle: agent timeline · right: Ops approvals</p><p class="pg"></p></div>
-<aside>Switch to the live app here. Purple timeline rows are AI steps, grey rows are code, and the coloured rows show policy decisions and guardrails.</aside>
+<div class="foot"><p class="foot-l">Numbered steps = the path taken · grey = branches it did not need · click any step for its details</p><p class="pg"></p></div>
+<aside>The timeline is the internal view for Paytm’s operations team; merchants and customers only see the simple chat on the left. The graph is the real LangGraph state machine: 17 steps, and the case’s own path lights up in order. A Cards view shows the same events as a list.</aside>
 </section>
+
+<section id="audit" style="gap:40px;">
+<div class="head">
+<p class="eyebrow">OPS AND AUDIT</p>
+<h2>Approve in one tab. Every case is kept and replayable.</h2>
+</div>
+<div class="row" style="gap:48px;">
+<div class="col rise" style="--i:0; gap:16px;">
+<img src="images/ops-approvals-tab.png" alt="Ops approvals tab: an R-22 card to refund ₹12,000 for ORD-2002, with both payments in a table, customer details masked, the evidence hash and Approve and Reject buttons" style="width:808px; height:481px; object-fit:contain; border-radius:16px; border:2px solid #C5D2E3; background:#FCFDFE;">
+<p class="small"><b style="color:#0E1B33;">Ops approvals:</b> evidence pack, masked customer details, and a hash that binds the decision</p>
+</div>
+<div class="col rise" style="--i:2; gap:16px;">
+<img src="images/history-tab.png" alt="History tab: six cases newest first with merchant, order, outcome, rule (R-22, R-21, G-03, R-21, G-01, R-07) and details such as tickets and proactive double payment" style="width:808px; height:481px; object-fit:contain; border-radius:16px; border:2px solid #C5D2E3; background:#FCFDFE;">
+<p class="small"><b style="color:#0E1B33;">History:</b> every case with its outcome and rule; filter by merchant or outcome, click to replay</p>
+</div>
+</div>
+<div class="foot"><p class="foot-l">Stored in SQLite: an audit event for every step, with phone numbers and UPI IDs masked · history needs the Ops token</p><p class="pg"></p></div>
+<aside>After Approve or Reject the app jumps back to the graph so you see the case finish. History answers “what did the AI do last Tuesday, and who approved it?”: every case is in the audit log and can be replayed step by step. It is Ops-only because it spans all merchants.</aside>
+</section>
+
 <section id="double" style="gap:40px;">
 <div class="head">
 <p class="eyebrow">CASE 4 · PROACTIVE</p>
@@ -470,6 +505,7 @@ h3 {
 <div class="foot"><p class="foot-l">Consent is bound to a one-time token and the evidence hash · an invalid answer means keep · only Ops can record “no reply”</p><p class="pg"></p></div>
 <aside>Paying twice is sometimes intentional, so the agent asks rather than refunding on its own. Silence or an invalid answer never moves money. A ₹7,200 duplicate follows the same path, but the refund also needs Ops approval under R-22.</aside>
 </section>
+
 <section id="guardrails" class="alt" style="gap:40px;">
 <div class="head">
 <p class="eyebrow">GUARDRAILS</p>
@@ -489,6 +525,7 @@ h3 {
 <div class="foot"><p class="foot-l">Fail closed: an unknown action, unmatched rule, failed verification or a system down 3 times all escalate</p><p class="pg"></p></div>
 <aside>The main prompt-injection defence is that the model never chooses whose data it reads: the merchant ID is injected by code from the verified session. A test tells the model “I am M1004” and the case still escalates under G-01. Every guardrail here has automated tests.</aside>
 </section>
+
 <section id="replies" style="gap:40px;">
 <div class="head">
 <p class="eyebrow">NO MADE-UP PAYMENT FACTS</p>
@@ -511,6 +548,7 @@ h3 {
 <div class="foot"><p class="foot-l">Seen in testing: Sarvam invented a date and once answered in Malayalam; the validator caught both</p><p class="pg"></p></div>
 <aside>Because the AI only ever sees placeholders, the input is the same for every case with the same outcome and language, which also makes replies cacheable and deterministic for the demo. Live Sarvam kept the placeholders 8 out of 8 times in Tamil and English.</aside>
 </section>
+
 <section id="sarvam" class="alt" style="gap:40px;">
 <div class="head">
 <p class="eyebrow">TAMIL VOICE WITH SARVAM</p>
@@ -532,26 +570,30 @@ h3 {
 <div class="foot"><p class="foot-l">The Sarvam key stays on the server · the demo sample voice was generated with Bulbul v3</p><p class="pg"></p></div>
 <aside>We split models by job: the larger reasoning model for understanding and tool calls, and the fast conversational model for replies, because reasoning tokens on the big model sometimes used up the reply budget. Voice needs internet; typed demos are cached.</aside>
 </section>
+
 <section id="numbers" style="gap:40px;">
 <div class="head">
 <p class="eyebrow">PROOF</p>
 <h2>Tested for reliability, not just a happy path</h2>
 </div>
 <div class="row" style="gap:24px;">
-<div class="card grow rise" style="--i:0; padding:28px; gap:12px;"><p class="big">165</p><p class="txt">automated tests pass, with the AI mocked so they are deterministic</p></div>
+<div class="card grow rise" style="--i:0; padding:28px; gap:12px;"><p class="big">184</p><p class="txt">automated tests pass, with the AI mocked so they are deterministic</p></div>
 <div class="card grow rise" style="--i:1; padding:28px; gap:12px;"><p class="big">150/150</p><p class="txt">repeat runs pass: 15 scenarios × 10, with cached Sarvam answers</p></div>
 <div class="card grow rise" style="--i:2; padding:28px; gap:12px;"><p class="big" style="color:#0B6E61;">300/300</p><p class="txt">chaos runs with 25% of system calls failing: no crash, never a double payout or refund</p></div>
 </div>
 <div class="col fade" style="--i:4; gap:14px;">
-<p class="t">15 situations handled</p>
+<p class="t">15 demo situations, plus 13 more hidden in 130 payments across 12 merchants</p>
 <div class="row" style="gap:6px; height:64px;">
-<div style="flex:10; background:#0A5FC2; border-radius:12px 0 0 12px; display:flex; align-items:center; padding-left:24px;"><p style="font-size:26px; font-weight:700; color:#F6F8FB;">10 closed by the agent</p></div>
-<div style="flex:5; background:#FFD9AE; border-radius:0 12px 12px 0; display:flex; align-items:center; padding-left:24px;"><p style="font-size:26px; font-weight:700; color:#6E3500;">5 handed to a human</p></div>
+<div style="flex:8; background:#0A5FC2; border-radius:12px 0 0 12px; display:flex; align-items:center; padding-left:20px;"><p style="font-size:26px; font-weight:700; color:#F6F8FB;">8 fully automatic</p></div>
+<div style="flex:3; background:#FFD9AE; display:flex; align-items:center; padding-left:16px;"><p style="font-size:26px; font-weight:700; color:#6E3500;">3 after approval</p></div>
+<div style="flex:3; background:#F6C9CD; display:flex; align-items:center; padding-left:16px;"><p style="font-size:26px; font-weight:700; color:#7E1620;">3 escalated</p></div>
+<div style="flex:1.4; background:#E4E9F1; border-radius:0 12px 12px 0; display:flex; align-items:center; padding-left:14px;"><p style="font-size:24px; font-weight:700; color:#33405A;">1 asks</p></div>
 </div>
 </div>
 <div class="foot"><p class="foot-l">Speed: live Sarvam 9–17 s per case · demo cache about 0.03 s · reply about 0.2 s</p><p class="pg"></p></div>
-<aside>Be precise: the 150 repeat runs replay cached Sarvam answers, so they prove the code is reliable, not that the model always understands. The chaos test randomly fails a quarter of system calls and checks money safety: never more than one refund per transaction and never more than one payout retry.</aside>
+<aside>All three numbers were re-run on 15 November on the final code. Be precise: the 150 repeat runs replay cached Sarvam answers, so they prove the code is reliable, not that the model always understands. The chaos test randomly fails a quarter of system calls and checks money safety: never more than one refund per transaction and never more than one payout retry. The extra history (M1007 to M1012) adds R-08, R-23 and G-06 examples.</aside>
 </section>
+
 <section id="next" class="alt" style="gap:40px;">
 <div class="head">
 <p class="eyebrow">PATH TO PRODUCTION</p>
@@ -588,12 +630,13 @@ h3 {
 <div class="foot"><p class="foot-l">The same pattern fits claims or loan servicing: AI investigates, policy decides, verifier confirms</p><p class="pg"></p></div>
 <aside>Be honest when asked what is not production-ready: the payment systems are mocks, customer identity is a UPI ID instead of an app session, and it runs as one process on SQLite. Going live means replacing the mock functions with real adapters; the agent, policy engine and checks stay the same.</aside>
 </section>
+
 <section id="close" style="background:#DCEBFB; justify-content:center; gap:48px; padding:128px;">
 <p class="eyebrow rise" style="--i:0;">MERCHANT SUCCESS AI</p>
 <h1 class="rise" style="--i:1;">Thank you</h1>
 <p class="lede rise" style="--i:2; color:#2E3B55; max-width:1400px;">An AI teammate that closes merchant payment cases: <span style="color:#6A3DC0;">the AI proposes</span>, <span style="color:#0A5FC2;">the policy engine decides</span>, <span style="color:#0B6E61;">the verifier confirms</span>.</p>
 <div class="row rise" style="--i:3; gap:16px; flex-wrap:wrap;">
-<p class="pill auto" style="background:#FCFDFE;">165 tests</p>
+<p class="pill auto" style="background:#FCFDFE;">184 tests</p>
 <p class="pill auto" style="background:#FCFDFE;">150/150 repeat runs</p>
 <p class="pill ver" style="background:#FCFDFE;">300/300 chaos runs</p>
 <p class="pill ai" style="background:#FCFDFE;">Tamil voice with Sarvam</p>
@@ -601,6 +644,7 @@ h3 {
 <p class="small rise" style="--i:4; color:#3A4762;">Questions welcome · Team Absolute AI · Navaneethamahavishnu · all data and systems shown are synthetic</p>
 <aside>Close on the one sentence, then invite questions. The Q&amp;A sheet in DEMO_SCRIPT.md has short answers for the likely ones.</aside>
 </section>
+
 <script>
 function fit(){ if (matchMedia('print').matches) return; var z = Math.min(1, (innerWidth - 32) / 1920); document.querySelectorAll('body > section').forEach(function(s){ s.style.zoom = z; }); }
 addEventListener('resize', fit); fit();

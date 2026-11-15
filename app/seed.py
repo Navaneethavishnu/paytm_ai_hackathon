@@ -85,6 +85,10 @@ def reset_and_seed():
 
         s.add(RiskFlag(mid="M1005", flag="VELOCITY_ANOMALY", note="Unusual late-night volume from new VPAs"))
 
+        # A week of extra history for 6 more merchants (M1007-M1012). Demo merchants above are untouched.
+        from app.seed_bulk import seed_bulk
+        seed_bulk(s, now)
+
     print("Seeded synthetic data.")
 
 

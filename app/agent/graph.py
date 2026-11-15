@@ -8,7 +8,7 @@ intake -> verify_merchant -> investigate -> diagnose -> propose_action -> policy
                                invalid        -> escalate
                 escalate -> escalate
    verify fails  -> propose_action (guard G-02 escalates; no data tools are called)
-   no order ID   -> respond (asks for it)
+   no order ID   -> verify_merchant -> suggest_orders (recent payments to tap) -> respond (asks for it)
    info-only diagnosis (settled, pending, failed, not found) -> respond, no action
 
 Every case runs on thread_id = case_id with a SQLite checkpointer, so a case paused
@@ -69,11 +69,14 @@ def _audited(name, fn):
 
 
 def _after_intake(s):
-    return "respond" if s.get("status") == "needs_info" else "verify_merchant"
+    # Always verify first, even without an order ID: we may show the merchant their recent payments.
+    return "verify_merchant"
 
 
 def _after_verify(s):
-    return "investigate" if s.get("merchant_verified") else "propose_action"
+    if not s.get("merchant_verified"):
+        return "propose_action"          # G-02 escalates; no data tools are called
+    return "suggest_orders" if s.get("status") == "needs_info" else "investigate"
 
 
 def _dup(s) -> bool:
@@ -122,6 +125,7 @@ def build_graph(llm=None, checkpointer=None, reply_llm=None):
     g = StateGraph(CaseState)
     g.add_node("intake", _audited("intake", partial(nodes.intake, llm=llm)))
     g.add_node("verify_merchant", _audited("verify_merchant", nodes.verify_merchant))
+    g.add_node("suggest_orders", _audited("suggest_orders", nodes.suggest_orders))
     g.add_node("investigate", _audited("investigate", partial(nodes.investigate, llm=llm)))
     g.add_node("diagnose", _audited("diagnose", nodes.diagnose))
     g.add_node("propose_action", _audited("propose_action", nodes.propose_action))
@@ -139,8 +143,9 @@ def build_graph(llm=None, checkpointer=None, reply_llm=None):
     g.add_node("escalate", _audited("escalate", nodes.escalate))
 
     g.add_edge(START, "intake")
-    g.add_conditional_edges("intake", _after_intake, ["verify_merchant", "respond"])
-    g.add_conditional_edges("verify_merchant", _after_verify, ["investigate", "propose_action"])
+    g.add_conditional_edges("intake", _after_intake, ["verify_merchant"])
+    g.add_conditional_edges("verify_merchant", _after_verify, ["investigate", "propose_action", "suggest_orders"])
+    g.add_edge("suggest_orders", "respond")
     g.add_edge("investigate", "diagnose")
     g.add_edge("diagnose", "propose_action")
     g.add_conditional_edges("propose_action", _after_propose, ["policy_gate", "respond", "ask_customer"])

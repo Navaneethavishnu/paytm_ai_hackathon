@@ -9,15 +9,16 @@ I'm Navaneethamahavishnu, a solo builder: **Team Absolute AI**. Our project is *
 - The Sarvam API key lives only in `.env` (gitignored). Never put it in `.env.example` or any other file.
 - Ask me before adding any Python or npm dependency.
 - Working demo > reliability > polish > new features. Today is the finale, so avoid risky changes to the agent, policy or demo cache.
-- After any code change, run `.venv/bin/python -m pytest -q`. The expected result is **165 passed, 1 skipped** (the skipped one is a live Sarvam test).
+- After any code change, run `.venv/bin/python -m pytest -q`. The expected result is **184 passed, 1 skipped** (the skipped one is a live Sarvam test).
 
 ## Current state: everything is built and verified
 - Steps 1–7 and Case 4 (proactive double payment, the customer chooses keep or refund) are done.
 - Checks:
-  - 165 tests pass.
+  - 184 tests pass.
   - `scripts/stress.py`: 150/150 cached live runs (15 scenarios × 10).
   - 300/300 chaos runs at 25% tool failure, with no double payout or refund.
-- 15 situations: 10 closed by the agent, 5 handed to a human.
+- 15 demo situations: 8 fully automatic, 3 after a human approves, 3 escalated, 1 asks for details. Plus 6 extra merchants (M1007–M1012, `app/seed_bulk.py`) with 115 more payments (130 total) hiding 13 more scenarios incl. R-08, R-23, G-06.
+- UI (15 Nov): timeline tabs Graph (default, 17-node LangGraph view) | Cards | Ops approvals | History; the right Ops column was removed. `GET /cases` (Ops token) lists case history. Deck has 17 slides (new slide `audit`).
 - Policy limits:
   - Refunds: auto ≤ ₹5,000 (R-21); Ops approval ≤ ₹1,00,000 (R-22); otherwise escalate (R-23).
   - Payout retries: auto ≤ ₹50,000 (R-07); above that, Ops (R-10); a second retry needs Ops (R-08).

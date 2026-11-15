@@ -173,7 +173,7 @@ def test_stats_and_reset(client):
 
 def test_demo_merchants_have_no_phone(client):
     ms_ = client.get("/demo/merchants").json()
-    assert len(ms_) == 6 and all("phone" not in m for m in ms_)
+    assert len(ms_) == 12 and all("phone" not in m for m in ms_)
 
 
 def test_cors_allows_web_app_only(client):
@@ -198,3 +198,48 @@ def test_kb_citation(q, doc):
 def test_escalation_citation_does_not_hint_reason(client):
     v = wait(client, start(client, "M1003", "0003", "ORD-4001 missing"))
     assert v["citation"]["doc"] == "kb/escalations.md"
+
+
+# ---------- case history (support / Ops audit view) ----------
+def test_case_history_needs_ops_token(client):
+    assert client.get("/cases").status_code == 401
+    assert client.get("/cases", headers={"X-Ops-Token": "wrong"}).status_code == 401
+
+
+def test_case_history_lists_cases_newest_first_with_outcome(client):
+    c1 = start(client, "M1001", "0001", "ORD-1001 ₹2,400 money not received")
+    wait(client, c1)
+    c3 = start(client, "M1003", "0003", "ORD-4001 for ₹48,000 never reached my account.")
+    wait(client, c3)
+    rows = client.get("/cases", headers=OPS).json()
+    assert [r["case_id"] for r in rows] == [c3, c1]
+    newest, oldest = rows
+    assert newest["status"] == "escalated" and newest["rule_id"] == "G-01" and newest["ticket_id"]
+    assert newest["merchant"] == "Sri Balaji Stores"
+    assert oldest["status"] == "resolved" and oldest["rule_id"] == "R-07" and oldest["tier"] == "auto"
+    assert oldest["order_id"] == "ORD-1001"
+
+
+def test_case_history_filters_and_shows_reviewer(client):
+    c2 = start(client, "M1002", "0002", "Customer says they were charged twice for ORD-2001, ₹12,000.")
+    wait(client, c2)
+    c1 = start(client, "M1001", "0001", "ORD-1001 ₹2,400 money not received")
+    wait(client, c1)
+    waiting = client.get("/cases", params={"status": "waiting"}, headers=OPS).json()
+    assert [r["case_id"] for r in waiting] == [c2]
+    h = client.get("/approvals", headers=OPS).json()[0]["evidence_hash"]
+    r = client.post(f"/approvals/{c2}", headers=OPS, json={"decision": "approve", "reviewer": "Navaneetha", "evidence_hash": h})
+    assert r.status_code == 200, r.text
+    wait(client, c2)
+    only_m1002 = client.get("/cases", params={"mid": "M1002"}, headers=OPS).json()
+    assert len(only_m1002) == 1
+    assert only_m1002[0]["status"] == "resolved"
+    assert only_m1002[0]["approval"] == {"decision": "approve", "reviewer": "Navaneetha"}
+    assert client.get("/cases", params={"mid": "bad"}, headers=OPS).status_code == 422
+
+
+def test_case_history_never_shows_raw_evidence_or_pii(client):
+    wait(client, start(client, "M1002", "0002", "ORD-2003 charged twice, ₹1,499"))
+    row = client.get("/cases", headers=OPS).json()[0]
+    assert "evidence" not in row and "messages" not in row
+    assert "@" not in str(row)        # no customer UPI IDs

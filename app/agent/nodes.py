@@ -77,7 +77,7 @@ def intake(state: dict, llm) -> dict:
     intent = parsed.intent if parsed else ("duplicate_charge" if re.search(r"twice|double|duplicate", text, re.I) else "missing_payout")
 
     out = {"order_id": order_id, "claimed_amount": claimed, "language": language, "intent": intent,
-           "evidence": {}, "signals": [], "tool_failures": 0, "llm_tool_calls": 0}
+           "evidence": {}, "signals": [], "tool_failures": 0, "llm_tool_calls": 0, "order_choices": None}
     if not order_id:
         out["status"] = "needs_info"
     return out
@@ -86,6 +86,11 @@ def intake(state: dict, llm) -> dict:
 # ---------------- verify_merchant ----------------
 def verify_merchant(state: dict) -> dict:
     ctx = Ctx(state)
+    if state.get("merchant_verified") and state.get("merchant"):
+        # Follow-up message (e.g. the merchant tapped an order): identity was already verified
+        # earlier in THIS case, and the PIN was dropped from state, so don't ask the mock again.
+        audit.log(ctx.case_id, "tool", "verify_merchant", {"skipped": "already verified in this case"})
+        return {**ctx.updates(), "merchant_verified": True}
     if state.get("source") == "system":
         # Proactive case opened by an internal, token-authenticated system event: no merchant to verify.
         audit.log(ctx.case_id, "tool", "verify_merchant", {"skipped": "system-initiated case"})
@@ -102,6 +107,22 @@ def verify_merchant(state: dict) -> dict:
     elif not ctx.tools_down:
         ctx.signal("identity_unverified")
     return {**ctx.updates(), **out}
+
+
+# ---------------- suggest_orders ----------------
+def suggest_orders(state: dict) -> dict:
+    """No order ID given: after identity is verified, show the merchant's own recent payments
+    (matching the amount they mentioned, if any) so they can tap one instead of typing the ID.
+    Deterministic, read-only, mid comes from verified state. Choices come only from the tool result."""
+    ctx = Ctx(state)
+    amount = state.get("claimed_amount")
+    r = call(ctx, "list_recent_transactions",
+             lambda: ms.list_recent_transactions(state["mid"], amount=amount),
+             args={"since_hours": 48, "amount": amount}) or {}
+    choices = [{"order_id": t["orderId"], "amount": float(t["txnAmount"]), "time": t["txnDate"],
+                "status": t["status"]} for t in r.get("transactions", [])]
+    ctx.evidence["list_recent_transactions"] = r
+    return {**ctx.updates(), "order_choices": choices, "status": "needs_info"}
 
 
 # ---------------- investigate ----------------
@@ -483,7 +504,7 @@ def respond(state: dict, llm) -> dict:
     facts = replies.build_facts(st)
     lang = state.get("language") or "en-IN"
     text, source, why = "", "template", "empty"
-    if facts["outcome"] != "need_order":
+    if facts["outcome"] not in ("need_order", "pick_order"):     # fixed templates, no LLM
         # The LLM only ever sees the placeholder skeleton, never real amounts/IDs.
         # Same input for every case with this outcome -> cacheable in DEMO_MODE.
         try:

@@ -23,14 +23,16 @@ const TIER_TONE = { auto: "auto", approval: "approval", escalate: "escalate" };
 // Node events that are already covered by a more specific event.
 const HIDDEN_NODES = new Set([
   "verify_merchant", "policy_gate", "execute", "verify_outcome", "respond",
-  "escalate", "prepare_approval", "approval_rejected", "ask_customer", "notify_parties",
+  "escalate", "prepare_approval", "approval_rejected", "ask_customer", "notify_parties", "suggest_orders",
 ]);
 
 function toolRow(name, d) {
   const r = d.result || {};
   switch (name) {
     case "verify_merchant":
-      if (d.skipped) return { title: "Identity check skipped", detail: "System-initiated case (proactive)", tone: "code" };
+      if (d.skipped) return d.skipped.startsWith("already")
+        ? { title: "Identity already verified", detail: "Verified earlier in this case", tone: "ok", badge: "CODE" }
+        : { title: "Identity check skipped", detail: "System-initiated case (proactive)", tone: "code" };
       return r.verified
         ? { title: "Merchant verified", detail: `${d.args?.mid} · PIN ****`, tone: "ok", badge: "CODE" }
         : { title: "Merchant NOT verified", detail: r.locked ? "Locked after too many wrong PINs" : "Wrong PIN", tone: "escalate", badge: "CODE" };
@@ -52,6 +54,10 @@ function toolRow(name, d) {
     case "find_duplicate_payments": {
       const dups = r.duplicates || [];
       return { title: "Duplicate check", detail: dups.length ? `Found ${dups.map((x) => x.orderId).join(", ")} (same customer, amount, invoice)` : "No duplicates", tone: dups.length ? "approval" : "tool" };
+    }
+    case "list_recent_transactions": {
+      const t = r.transactions || [];
+      return { title: "No order ID: listed recent payments", detail: t.length ? `${t.length} of this merchant's own${d.args?.amount ? ` matching ${inr(d.args.amount)}` : ""} · merchant taps one` : "None found · asked for the order ID", tone: "tool", badge: "CODE" };
     }
     case "get_risk_flags":
       return { title: "Risk flags", detail: (r.flags || []).length ? r.flags.join(", ") : "None", tone: (r.flags || []).length ? "escalate" : "tool" };

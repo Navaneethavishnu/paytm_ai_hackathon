@@ -8,6 +8,7 @@ Merchant endpoints: POST /cases, POST /cases/{id}/messages, GET /cases/{id}, GET
 Ops endpoints (X-Ops-Token): GET /approvals, POST /approvals/{id}, POST /demo/reset, POST /events/payout-failed,
                              POST /events/duplicate-payment, POST /cases/{id}/customer-no-reply
 Customer endpoints (Case 4): GET /customer/inbox?vpa=, POST /customer/decisions/{id} (one-time token + hash)
+Ops history: GET /cases?mid=&status= (all handled cases, newest first)
 Demo helpers: GET /demo/merchants, GET /stats, GET /health
 
 Cases run in a background thread so the app can poll /events and watch the timeline fill in live.
@@ -158,6 +159,7 @@ def case_view(case_id: str) -> dict:
         "status": s.get("status", "open"), "source": s.get("source", "merchant"), "trigger": s.get("trigger"),
         "mid": s.get("mid"), "order_id": s.get("order_id"), "language": s.get("language"),
         "messages": s.get("messages", []), "reply": s.get("reply"),
+        "order_choices": s.get("order_choices") if s.get("status") == "needs_info" else None,
         "diagnosis": d.get("code"),
         "policy": {"tier": pd.get("tier"), "rule_id": pd.get("rule_id"), "reason": pd.get("reason")} if pd else None,
         "approval": s.get("approval"), "ticket_id": s.get("ticket_id"),
@@ -389,6 +391,48 @@ def customer_no_reply(case_id: str):
     llm, reply_llm = llms()
     agent.customer_decide(case_id, "no_response", s["customer_ask"]["hash"], by_ops=True, llm=llm, reply_llm=reply_llm)
     return case_view(case_id)
+
+
+_STATUS_GROUPS = {"waiting": ("waiting_approval", "waiting_customer")}
+
+
+@app.get("/cases", dependencies=[Depends(require_ops)])
+def case_history(mid: str | None = None, status: str | None = None, limit: int = 100):
+    """Case history for support / Ops: every case the agent handled, newest first.
+    Ops-only (it spans all merchants). Each row reopens the full timeline via /cases/{id}/events."""
+    if mid is not None and not _MID_RE.match(mid):
+        raise HTTPException(422, "mid must look like M1001")
+    limit = max(1, min(limit, 200))
+    with session_scope() as s:
+        starts = (s.query(AuditEvent.case_id, AuditEvent.ts, AuditEvent.detail)
+                  .filter_by(kind="node", name="start").order_by(AuditEvent.id.desc()).all())
+        names = {m.mid: m.name for m in s.query(Merchant).all()}
+    out, seen = [], set()
+    for cid, ts, detail in starts:
+        if cid in seen:
+            continue
+        seen.add(cid)
+        st = agent.get_case(cid)
+        status_now = "open" if cid in _RUNNING else st.get("status", "open")
+        case_mid = st.get("mid") or (detail or {}).get("mid")
+        if mid and case_mid != mid:
+            continue
+        if status and status_now not in _STATUS_GROUPS.get(status, (status,)):
+            continue
+        pd, appr = st.get("policy_decision") or {}, st.get("approval") or {}
+        out.append({
+            "case_id": cid, "started": ts.isoformat() if ts else None,
+            "mid": case_mid, "merchant": names.get(case_mid), "source": st.get("source", "merchant"),
+            "trigger": st.get("trigger"), "order_id": st.get("order_id"),
+            "message": ((detail or {}).get("message") or "")[:160],
+            "status": status_now, "diagnosis": (st.get("diagnosis") or {}).get("code"),
+            "rule_id": pd.get("rule_id"), "tier": pd.get("tier"),
+            "approval": {"decision": appr.get("decision"), "reviewer": appr.get("reviewer")} if appr else None,
+            "ticket_id": st.get("ticket_id"),
+        })
+        if len(out) >= limit:
+            break
+    return out
 
 
 @app.get("/stats")

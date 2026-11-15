@@ -31,7 +31,7 @@ def nice_date(iso: str) -> str:
 
 def outcome_of(state: dict) -> str:
     if state.get("status") == "needs_info":
-        return "need_order"
+        return "pick_order" if state.get("order_choices") else "need_order"
     if state.get("status") == "escalated":
         return "escalated"
     code = (state.get("diagnosis") or {}).get("code")
@@ -53,7 +53,7 @@ def build_facts(state: dict) -> dict:
     v = state.get("verification") or {}
     bank = (state.get("merchant") or {}).get("bank_account", "")
     f: dict = {"outcome": out}
-    if out == "need_order":
+    if out in ("need_order", "pick_order"):
         return f
     if out == "escalated":
         f["ticket_id"] = state.get("ticket_id") or ""
@@ -83,6 +83,11 @@ TEMPLATES = {
     "need_order": {
         "en-IN": "Please share the order ID (for example ORD-1234) so I can check it.",
         "ta-IN": "சரிபார்க்க உங்கள் ஆர்டர் எண்ணைப் பகிரவும் (உதா: ORD-1234).",
+    },
+    # No numbers in the text: the order list itself is shown as buttons, built from the tool result.
+    "pick_order": {
+        "en-IN": "I found your recent payments below. Tap the order you mean, or type the order ID.",
+        "ta-IN": "உங்கள் சமீபத்திய பணப்பரிவர்த்தனைகளைக் கீழே காட்டியுள்ளேன். சரியான ஆர்டரைத் தொடவும், அல்லது ஆர்டர் எண்ணை எழுதவும்.",
     },
     "payout_retried": {
         "en-IN": "Your ₹{amount} for order {order_id} had failed at the bank. I retried it and it has now reached your account {bank_account}. UTR: {utr}.",

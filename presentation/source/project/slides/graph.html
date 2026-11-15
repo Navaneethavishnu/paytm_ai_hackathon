@@ -1,7 +1,7 @@
 <section id="graph" style="gap:40px;">
 <div class="head">
 <p class="eyebrow">THE STATE MACHINE</p>
-<h2>Every case follows explicit nodes and edges</h2>
+<h2>Every case follows 17 explicit nodes and their edges</h2>
 </div>
 <div class="lane rise" style="--i:0;">
 <p class="node node-ai">intake</p>
@@ -39,6 +39,13 @@
 <p class="small">ticket for a specialist, generic reply that reveals nothing</p>
 </div>
 <div class="lane rise" style="--i:5;">
+<p class="lane-label" style="color:#33405A;">No order ID</p>
+<p class="node">suggest_orders</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node node-ai">respond</p>
+<p class="small">shows the merchant’s own recent payments to tap</p>
+</div>
+<div class="lane rise" style="--i:6;">
 <p class="lane-label" style="color:#6A3DC0;">Customer (Case 4)</p>
 <p class="node">ask_customer</p>
 <x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>

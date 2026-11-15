@@ -127,6 +127,26 @@ def find_duplicate_payments(mid: str, order_id: str, window_seconds: int = 600) 
         return {"orderId": order_id, "duplicates": [_txn_body(d) for d in dups]}
 
 
+def list_recent_transactions(mid: str, since_hours: int = 48, amount: float | None = None,
+                             limit: int = 5) -> dict:
+    """The merchant's own recent payments, newest first, so they can pick an order instead of typing it.
+    If an amount is given and some payments match it, only those are returned. No customer VPA (PII)."""
+    _maybe_fail("list_recent_transactions")
+    from app.clock import now
+    hi = now()
+    lo = hi - timedelta(hours=since_hours)
+    with session_scope() as s:
+        rows = (s.query(Transaction)
+                .filter(Transaction.mid == mid, Transaction.created_at.between(lo, hi))
+                .order_by(Transaction.created_at.desc(), Transaction.txn_id.desc()).all())
+        if amount is not None and math.isfinite(amount):
+            matching = [r for r in rows if abs(r.amount - amount) < 0.005]
+            rows = matching or rows
+        return {"transactions": [{"orderId": r.order_id, "txnAmount": f"{r.amount:.2f}",
+                                  "txnDate": r.created_at.isoformat(sep=" "), "status": r.status}
+                                 for r in rows[:limit]]}
+
+
 # ---------------- Settlement ----------------
 def _payout_dict(p: Payout) -> dict:
     return {"payoutId": p.payout_id, "status": p.status, "amount": f"{p.amount:.2f}",
