@@ -1,0 +1,33 @@
+<section id="double" style="gap:40px;">
+<div class="head">
+<p class="eyebrow">CASE 4 · PROACTIVE</p>
+<h2>A double payment is caught before anyone complains</h2>
+</div>
+<div class="row" style="gap:16px; align-items:center;">
+<div class="card grow rise" style="--i:0; gap:10px;"><x-icon name="Lightning" class="ic ic-violet"></x-icon><p class="t">System event</p><p class="small">Duplicate payment detected on ORD-6002 at Kumar Hotel</p></div>
+<x-shape kind="arrow-right" class="fade" style="--i:1; width:40px; height:22px; background:#8D9AB2;"></x-shape>
+<div class="card grow rise" style="--i:1; gap:10px;"><x-icon name="Search" class="ic ic-blue"></x-icon><p class="t">Code checks</p><p class="small">Same UPI ID, same bill, same ₹650, 70 seconds apart</p></div>
+<x-shape kind="arrow-right" class="fade" style="--i:2; width:40px; height:22px; background:#8D9AB2;"></x-shape>
+<div class="card grow rise" style="--i:2; gap:10px; border-color:#F0BF86;"><x-icon name="Users" class="ic ic-amber"></x-icon><p class="t">Ask the customer</p><p class="small">“Keep both” or “Refund one”. The merchant gets a heads-up.</p></div>
+</div>
+<div class="col" style="gap:20px;">
+<div class="lane rise" style="--i:4; background:#E6F0FC; border-radius:16px; padding:20px 24px;">
+<p class="pill auto" style="width:300px;">Refund one</p>
+<p class="node node-auto">policy: R-21 auto ≤ ₹5,000, R-22 Ops above</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node node-auto">refund</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node node-ver">verify</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node">notify both</p>
+</div>
+<div class="lane rise" style="--i:5; background:#E4E9F1; border-radius:16px; padding:20px 24px;">
+<p class="pill code" style="width:300px;">Keep both or no reply</p>
+<p class="node">no money moves</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node">notify both</p>
+</div>
+</div>
+<div class="foot"><p class="foot-l">Consent is bound to a one-time token and the evidence hash · an invalid answer means keep · only Ops can record “no reply”</p><p class="pg"></p></div>
+<aside>Paying twice is sometimes intentional, so the agent asks rather than refunding on its own. Silence or an invalid answer never moves money. A ₹7,200 duplicate follows the same path, but the refund also needs Ops approval under R-22.</aside>
+</section>

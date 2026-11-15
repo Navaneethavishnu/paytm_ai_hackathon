@@ -1,0 +1,22 @@
+<section id="replies" style="gap:40px;">
+<div class="head">
+<p class="eyebrow">NO MADE-UP PAYMENT FACTS</p>
+<h2>The AI writes the words. Code supplies every number.</h2>
+</div>
+<div class="row" style="gap:14px; align-items:center;">
+<div class="card grow rise" style="--i:0; padding:24px; gap:10px;"><p class="pill code">1 · CODE</p><p class="t">Template</p><p class="small">Picks the outcome and language, with {placeholders}</p></div>
+<x-shape kind="arrow-right" class="fade" style="--i:1; width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<div class="card grow rise" style="--i:1; padding:24px; gap:10px;"><p class="pill ai">2 · AI</p><p class="t">Sarvam rephrases</p><p class="small">Sees placeholders only, never real amounts or IDs</p></div>
+<x-shape kind="arrow-right" class="fade" style="--i:2; width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<div class="card grow rise" style="--i:2; padding:24px; gap:10px;"><p class="pill code">3 · CODE</p><p class="t">Fill values</p><p class="small">From evidence; each placeholder exactly once</p></div>
+<x-shape kind="arrow-right" class="fade" style="--i:3; width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<div class="card grow rise" style="--i:3; padding:24px; gap:10px; border-color:#96D3C7;"><p class="pill ver">4 · VERIFY</p><p class="t">Validator</p><p class="small">Every number in evidence? Right script? Else: safe template</p></div>
+</div>
+<div class="card fade" style="--i:5; gap:12px; background:#FCFDFE;">
+<p class="small"><b style="color:#0E1B33;">Template the AI rephrases (Case 1, English):</b></p>
+<p class="mono" style="font-size:26px; color:#33405A; line-height:1.45;">Your ₹{amount} for order {order_id} had failed at the bank. I retried it and it has now reached your account {bank_account}. UTR: {utr}.</p>
+<p class="small"><b style="color:#0E1B33;">Code fills:</b> ₹2,400 · ORD-1001 · XXXX4521 · the UTR read back from the payout system</p>
+</div>
+<div class="foot"><p class="foot-l">Seen in testing: Sarvam invented a date and once answered in Malayalam; the validator caught both</p><p class="pg"></p></div>
+<aside>Because the AI only ever sees placeholders, the input is the same for every case with the same outcome and language, which also makes replies cacheable and deterministic for the demo. Live Sarvam kept the placeholders 8 out of 8 times in Tamil and English.</aside>
+</section>

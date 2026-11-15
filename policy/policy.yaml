@@ -1,0 +1,71 @@
+# Merchant Success AI - action policy (ILLUSTRATIVE thresholds, synthetic).
+# The LLM never reads this file to decide anything. app/policy_engine.py does.
+# Rules are checked top to bottom; the first rule whose conditions all match wins.
+# tier: auto | approval | escalate
+# Conditions: max_amount, min_amount, max_prior_retries, failure_reason_in, requires_signals.
+# Unknown conditions, tiers or duplicate IDs fail at load time. Each action must end with a catch-all rule.
+# Evidence signals (e.g. duplicate_verified) are set only by deterministic code, never by the LLM.
+
+version: 1
+
+# Checked before any action. If a case has one of these signals, nothing executes.
+global_guards:
+  - id: G-01
+    signal: ownership_mismatch
+    reason: Transaction does not belong to the requesting merchant
+  - id: G-02
+    signal: identity_unverified
+    reason: Merchant identity could not be verified
+  - id: G-03
+    signal: risk_flag
+    reason: Account has an open risk or fraud flag
+  - id: G-04
+    signal: conflicting_records
+    reason: Systems disagree about the transaction
+  - id: G-05
+    signal: repeated_tool_failure
+    reason: A required system failed repeatedly
+  - id: G-06
+    signal: needs_human
+    reason: The agent could not reach a safe, known diagnosis
+
+actions:
+  retry_payout:
+    - id: R-07
+      tier: auto
+      when: {failure_reason_in: [BANK_TIMEOUT, BANK_DOWNTIME], max_prior_retries: 0, max_amount: 50000}
+      reason: First retry of a payout up to ₹50,000 that failed for a transient bank reason
+    - id: R-10
+      tier: approval
+      when: {failure_reason_in: [BANK_TIMEOUT, BANK_DOWNTIME], max_prior_retries: 0, min_amount: 50000.01}
+      reason: Payout retry above ₹50,000 needs a human to approve
+    - id: R-08
+      tier: approval
+      when: {failure_reason_in: [BANK_TIMEOUT, BANK_DOWNTIME], max_prior_retries: 1}
+      reason: Second retry needs a human to confirm the bank issue is resolved
+    - id: R-09
+      tier: escalate
+      reason: Payout failure is not transient or has been retried too often
+
+  refund_duplicate:
+    - id: R-21
+      tier: auto
+      when: {requires_signals: [duplicate_verified], min_amount: 0.01, max_amount: 5000}
+      reason: Verified duplicate charge within the auto-refund limit
+    - id: R-22
+      tier: approval
+      when: {requires_signals: [duplicate_verified], min_amount: 0.01, max_amount: 100000}
+      reason: Duplicate refund above the auto-refund limit needs ops approval
+    - id: R-23
+      tier: escalate
+      reason: Duplicate not verified by the system check, or refund amount is outside policy
+
+  create_ticket:
+    - id: R-31
+      tier: auto
+      reason: Creating or updating a support case is always allowed
+
+  update_bank_account:
+    - id: R-41
+      tier: approval
+      reason: Bank account changes always need human approval

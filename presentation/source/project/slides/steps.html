@@ -1,0 +1,28 @@
+<section id="steps" class="alt" style="gap:40px;">
+<div class="head">
+<p class="eyebrow">THE AI TEAMMATE</p>
+<h2>It doesn’t just answer. It closes the case.</h2>
+</div>
+<div class="col" style="gap:24px;">
+<div class="row" style="gap:16px; align-items:center;">
+<div class="card grow rise" style="--i:0; padding:24px; gap:10px;"><p class="pill ai">1 · AI</p><p class="t">Understand</p><p class="small">Tamil or English, chat or voice. Finds the order ID and amount.</p></div>
+<x-shape kind="arrow-right" class="fade" style="--i:1; width:32px; height:18px; background:#9AA7BD;"></x-shape>
+<div class="card grow rise" style="--i:1; padding:24px; gap:10px;"><p class="pill code">2 · CODE</p><p class="t">Verify merchant</p><p class="small">Last 4 digits of phone. 3 wrong tries lock. No lookups before this.</p></div>
+<x-shape kind="arrow-right" class="fade" style="--i:2; width:32px; height:18px; background:#9AA7BD;"></x-shape>
+<div class="card grow rise" style="--i:2; padding:24px; gap:10px;"><p class="pill ai">3 · AI</p><p class="t">Investigate</p><p class="small">Chooses up to 5 read-only lookups across payment systems.</p></div>
+<x-shape kind="arrow-right" class="fade" style="--i:3; width:32px; height:18px; background:#9AA7BD;"></x-shape>
+<div class="card grow rise" style="--i:3; padding:24px; gap:10px;"><p class="pill code">4 · CODE</p><p class="t">Diagnose</p><p class="small">Fixed codes: payout failed, duplicate, settled, not yours.</p></div>
+</div>
+<div class="row" style="gap:16px; align-items:center;">
+<div class="card grow rise" style="--i:4; padding:24px; gap:10px;"><p class="pill code">5 · CODE</p><p class="t">Propose action</p><p class="small">Action and amount copied from evidence, never from the AI.</p></div>
+<x-shape kind="arrow-right" class="fade" style="--i:5; width:32px; height:18px; background:#9AA7BD;"></x-shape>
+<div class="card grow rise" style="--i:5; padding:24px; gap:10px;"><p class="pill auto">6 · POLICY</p><p class="t">Policy decides</p><p class="small">Rules pick: automatic, Ops approval, or escalate.</p></div>
+<x-shape kind="arrow-right" class="fade" style="--i:6; width:32px; height:18px; background:#9AA7BD;"></x-shape>
+<div class="card grow rise" style="--i:6; padding:24px; gap:10px;"><p class="pill code">7 · CODE</p><p class="t">Execute</p><p class="small">Payout retry or refund, with an idempotency key.</p></div>
+<x-shape kind="arrow-right" class="fade" style="--i:7; width:32px; height:18px; background:#9AA7BD;"></x-shape>
+<div class="card grow rise" style="--i:7; padding:24px; gap:10px;"><p class="pill ver">8 · VERIFY</p><p class="t">Verify &amp; reply</p><p class="small">Re-reads the system. A mismatch escalates to a human.</p></div>
+</div>
+</div>
+<div class="foot"><p class="foot-l">Purple = AI · grey = plain code · blue = policy rules · green = verification</p><p class="pg"></p></div>
+<aside>The AI appears in only three places: understanding the message, choosing which read-only lookups to run, and phrasing the reply. Everything that touches money or permissions is plain code. If identity fails, the agent makes zero lookups and escalates.</aside>
+</section>

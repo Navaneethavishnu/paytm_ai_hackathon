@@ -1,0 +1,10 @@
+.env
+*.db
+__pycache__/
+.pytest_cache/
+chroma/
+web/node_modules/
+web/dist/
+demo_assets/llm_cache.tmp
+.venv/
+.DS_Store

@@ -1,0 +1,36 @@
+<section id="next" class="alt" style="gap:40px;">
+<div class="head">
+<p class="eyebrow">PATH TO PRODUCTION</p>
+<h2>Swap the adapters, keep the agent and the guardrails</h2>
+</div>
+<div class="row" style="gap:16px; align-items:stretch;">
+<div class="card grow rise" style="--i:0; gap:16px;">
+<p class="pill code">TODAY · PROTOTYPE</p>
+<ul class="txt" style="display:flex; flex-direction:column; gap:10px; padding-left:32px;">
+<li>Synthetic systems shaped like Paytm PG APIs</li>
+<li>SQLite, one process</li>
+<li>Demo-grade customer identity</li>
+</ul>
+</div>
+<div style="display:flex; align-items:center;"><x-shape kind="arrow-right" class="fade" style="--i:1; width:40px; height:22px; background:#8D9AB2;"></x-shape></div>
+<div class="card grow rise" style="--i:2; gap:16px; border-color:#9DC3EE;">
+<p class="pill auto">NEXT · PILOT</p>
+<ul class="txt" style="display:flex; flex-direction:column; gap:10px; padding-left:32px;">
+<li>Real API adapters, read-only first</li>
+<li>Real sign-in for merchants, customers and Ops</li>
+<li>Postgres, a job queue, monitoring</li>
+</ul>
+</div>
+<div style="display:flex; align-items:center;"><x-shape kind="arrow-right" class="fade" style="--i:3; width:40px; height:22px; background:#8D9AB2;"></x-shape></div>
+<div class="card grow rise" style="--i:4; gap:16px; border-color:#96D3C7;">
+<p class="pill ver">THEN · SCALE</p>
+<ul class="txt" style="display:flex; flex-direction:column; gap:10px; padding-left:32px;">
+<li>Turn on actions rule by rule</li>
+<li>Evals on real merchant phrasing</li>
+<li>More languages and case types</li>
+</ul>
+</div>
+</div>
+<div class="foot"><p class="foot-l">The same pattern fits claims or loan servicing: AI investigates, policy decides, verifier confirms</p><p class="pg"></p></div>
+<aside>Be honest when asked what is not production-ready: the payment systems are mocks, customer identity is a UPI ID instead of an app session, and it runs as one process on SQLite. Going live means replacing the mock functions with real adapters; the agent, policy engine and checks stay the same.</aside>
+</section>

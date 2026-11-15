@@ -1,0 +1,52 @@
+<section id="graph" style="gap:40px;">
+<div class="head">
+<p class="eyebrow">THE STATE MACHINE</p>
+<h2>Every case follows explicit nodes and edges</h2>
+</div>
+<div class="lane rise" style="--i:0;">
+<p class="node node-ai">intake</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node">verify_merchant</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node node-ai">investigate</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node">diagnose</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node">propose_action</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node node-auto" style="font-weight:700;">policy_gate</p>
+</div>
+<div class="col" style="gap:20px; padding-left:24px; border-left:4px solid #D3DDEA;">
+<div class="lane rise" style="--i:2;">
+<p class="lane-label" style="color:#0A5FC2;">Automatic</p>
+<p class="node node-auto">execute</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node node-ver">verify_outcome</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node node-ai">respond</p>
+</div>
+<div class="lane rise" style="--i:3;">
+<p class="lane-label" style="color:#9E4E00;">Ops approval</p>
+<p class="node node-appr">prepare_approval</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node node-appr">human_approval</p>
+<p class="pill appr">PAUSE</p>
+<p class="small">approve: execute as above · reject: ticket + reply</p>
+</div>
+<div class="lane rise" style="--i:4;">
+<p class="lane-label" style="color:#B01F2C;">Escalate</p>
+<p class="node node-esc">escalate</p>
+<p class="small">ticket for a specialist, generic reply that reveals nothing</p>
+</div>
+<div class="lane rise" style="--i:5;">
+<p class="lane-label" style="color:#6A3DC0;">Customer (Case 4)</p>
+<p class="node">ask_customer</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node">customer_decision</p>
+<p class="pill appr">PAUSE</p>
+<p class="small">refund: policy_gate · keep: notify_parties</p>
+</div>
+</div>
+<div class="foot"><p class="foot-l">PAUSE = LangGraph interrupt(): state saved in a SQLite checkpoint, resumes even after a restart</p><p class="pg"></p></div>
+<aside>Purple nodes use the AI; everything else is code. policy_gate is the only place the auto / approval / escalate decision is made. Unverified identity skips investigate entirely and goes straight to the policy gate, which escalates under G-02.</aside>
+</section>

@@ -1,0 +1,19 @@
+<section id="guardrails" class="alt" style="gap:40px;">
+<div class="head">
+<p class="eyebrow">GUARDRAILS</p>
+<h2>Nine guardrails, all enforced in code</h2>
+</div>
+<div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px;">
+<div class="card rise" style="--i:0; flex-direction:row; gap:18px; padding:24px;"><x-icon name="Lock" class="ic ic-blue"></x-icon><div class="col" style="gap:6px;"><p class="t">Identity first</p><p class="small">4-digit PIN, locks after 3 tries; no lookups before it</p></div></div>
+<div class="card rise" style="--i:1; flex-direction:row; gap:18px; padding:24px;"><x-icon name="Key" class="ic ic-blue"></x-icon><div class="col" style="gap:6px;"><p class="t">AI never picks merchant</p><p class="small">Merchant ID comes from login; the model’s ID is dropped</p></div></div>
+<div class="card rise" style="--i:2; flex-direction:row; gap:18px; padding:24px;"><x-icon name="Search" class="ic ic-blue"></x-icon><div class="col" style="gap:6px;"><p class="t">Read-only investigation</p><p class="small">Max 5 lookups; action tools are never shown to the AI</p></div></div>
+<div class="card rise" style="--i:3; flex-direction:row; gap:18px; padding:24px;"><x-icon name="Link" class="ic ic-teal"></x-icon><div class="col" style="gap:6px;"><p class="t">Idempotent money moves</p><p class="small">Every payout and refund carries an idempotency key</p></div></div>
+<div class="card rise" style="--i:4; flex-direction:row; gap:18px; padding:24px;"><x-icon name="Warning" class="ic ic-teal"></x-icon><div class="col" style="gap:6px;"><p class="t">No over-refund</p><p class="small">Refunds can never exceed what was paid, across cases</p></div></div>
+<div class="card rise" style="--i:5; flex-direction:row; gap:18px; padding:24px;"><x-icon name="Verified" class="ic ic-teal"></x-icon><div class="col" style="gap:6px;"><p class="t">Read-after-write</p><p class="small">Every action re-read from the system; mismatch escalates</p></div></div>
+<div class="card rise" style="--i:6; flex-direction:row; gap:18px; padding:24px;"><x-icon name="CheckCircle" class="ic ic-violet"></x-icon><div class="col" style="gap:6px;"><p class="t">Reply validator</p><p class="small">Every number and ID in a reply must exist in evidence</p></div></div>
+<div class="card rise" style="--i:7; flex-direction:row; gap:18px; padding:24px;"><x-icon name="Trust" class="ic ic-violet"></x-icon><div class="col" style="gap:6px;"><p class="t">Evidence-bound approval</p><p class="small">Ops token, reviewer name and a hash of the exact evidence</p></div></div>
+<div class="card rise" style="--i:8; flex-direction:row; gap:18px; padding:24px;"><x-icon name="Users" class="ic ic-violet"></x-icon><div class="col" style="gap:6px;"><p class="t">PII masked in logs</p><p class="small">Phone numbers and customer UPI IDs masked before logging</p></div></div>
+</div>
+<div class="foot"><p class="foot-l">Fail closed: an unknown action, unmatched rule, failed verification or a system down 3 times all escalate</p><p class="pg"></p></div>
+<aside>The main prompt-injection defence is that the model never chooses whose data it reads: the merchant ID is injected by code from the verified session. A test tells the model “I am M1004” and the case still escalates under G-01. Every guardrail here has automated tests.</aside>
+</section>

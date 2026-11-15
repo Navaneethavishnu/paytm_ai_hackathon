@@ -1,0 +1,608 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Merchant Success AI — Team Absolute AI</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400..700&family=Inter:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;600&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+* { margin: 0 }
+html { background: #c9d2de }
+body { font: 32px/1.2 sans-serif; counter-reset: page }
+body > section { width: 1920px !important; height: 1080px !important; overflow: hidden !important; box-sizing: border-box !important; position: relative; isolation: isolate; margin: 0 auto 24px; break-after: page; }
+aside { display: none !important }
+h1 { font-size: 96px; font-weight: 600 } h2 { font-size: 64px; font-weight: 600 } h3 { font-size: 44px; font-weight: 600 }
+table { width: 100%; border-collapse: separate; border-spacing: 0; border: solid #0003; border-width: 2px 0 0 2px }
+th, td { padding: .35em .6em; text-align: left; border: solid #0003; border-width: 0 2px 2px 0 }
+x-shape { display: block }
+x-shape[kind="arrow-right"] { clip-path: polygon(0 30%, 60% 30%, 60% 0, 100% 50%, 60% 100%, 60% 70%, 0 70%) }
+x-shape[kind="arrow-down"] { clip-path: polygon(30% 0, 70% 0, 70% 60%, 100% 60%, 50% 100%, 0 60%, 30% 60%) }
+x-icon { display: none }
+@page { size: 1920px 1080px; margin: 0 }
+@media print { * { animation: none !important } html { background: none } body > section { margin: 0; zoom: 1 !important } }
+</style>
+<style>
+:root {
+  --bg: #F6F8FB;
+  --bg2: #EAF1F9;
+  --card: #FCFDFE;
+  --ink: #0E1B33;
+  --body: #43506A;
+  --muted: #5B6780;
+  --line: #D3DDEA;
+  --blue: #0A5FC2;
+  --blue-soft: #DCEBFB;
+  --amber: #9E4E00;
+  --amber-soft: #FFEBD3;
+  --red: #B01F2C;
+  --red-soft: #FBE2E4;
+  --violet: #6A3DC0;
+  --violet-soft: #ECE4FB;
+  --teal: #0B6E61;
+  --teal-soft: #DAF1EC;
+  --slate-soft: #E4E9F1;
+}
+
+section {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 30px;
+  line-height: 1.35;
+  padding: 128px 128px 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  counter-increment: page;
+  box-sizing: border-box;
+}
+section.alt { background: var(--bg2); }
+
+/* Type scale: 112 / 64 / 40 / 30 / 24 */
+h1 {
+  font-family: 'Space Grotesk', Arial, sans-serif;
+  font-size: 112px;
+  font-weight: 700;
+  line-height: 1.0;
+  letter-spacing: -2px;
+  color: var(--ink);
+}
+h2 {
+  font-family: 'Space Grotesk', Arial, sans-serif;
+  font-size: 64px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -1px;
+  color: var(--ink);
+}
+h3 {
+  font-family: 'Space Grotesk', Arial, sans-serif;
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--ink);
+}
+.head { display: flex; flex-direction: column; gap: 16px; }
+.eyebrow { font-size: 24px; font-weight: 700; letter-spacing: 3px; color: var(--blue); }
+.lede { font-size: 32px; color: var(--body); line-height: 1.4; }
+.txt { font-size: 30px; color: var(--body); line-height: 1.4; }
+.small { font-size: 24px; color: var(--muted); line-height: 1.4; }
+.t { font-family: 'Space Grotesk', Arial, sans-serif; font-size: 30px; font-weight: 700; color: var(--ink); line-height: 1.2; }
+.mono { font-family: 'JetBrains Mono', 'Courier New', monospace; }
+.ta { font-family: 'Noto Sans Tamil', 'Inter', Arial, sans-serif; }
+
+/* Footer row */
+.foot {
+  position: absolute; left: 128px; bottom: 64px; width: 1664px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.foot-l { font-size: 24px; color: var(--muted); }
+.pg { font-size: 24px; color: var(--muted); font-family: 'JetBrains Mono', 'Courier New', monospace; }
+.pg::after { content: "Team Absolute AI · " counter(page); }
+
+/* Cards */
+.card {
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 20px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-sizing: border-box;
+}
+.row { display: flex; flex-direction: row; gap: 24px; }
+.col { display: flex; flex-direction: column; gap: 16px; }
+.grow { flex: 1; }
+
+/* Pills */
+.pill {
+  font-size: 24px; font-weight: 700; line-height: 1.2;
+  padding: 6px 16px; border-radius: 40px;
+  align-self: flex-start;
+}
+.auto { background: var(--blue-soft); color: var(--blue); }
+.appr { background: var(--amber-soft); color: var(--amber); }
+.esc { background: var(--red-soft); color: var(--red); }
+.ai { background: var(--violet-soft); color: var(--violet); }
+.code { background: var(--slate-soft); color: #33405A; }
+.ver { background: var(--teal-soft); color: var(--teal); }
+
+/* Graph nodes */
+.node {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 24px; font-weight: 500;
+  padding: 12px 18px; border-radius: 12px;
+  border: 2px solid var(--line); background: var(--card); color: var(--ink);
+  white-space: nowrap;
+}
+.node-ai { border-color: #B9A3EA; background: var(--violet-soft); color: #4A2896; }
+.node-auto { border-color: #9DC3EE; background: var(--blue-soft); color: #073F82; }
+.node-appr { border-color: #F0BF86; background: var(--amber-soft); color: #7A3C00; }
+.node-esc { border-color: #EBA7AE; background: var(--red-soft); color: #8E1722; }
+.node-ver { border-color: #96D3C7; background: var(--teal-soft); color: #08574D; }
+.lane { display: flex; flex-direction: row; align-items: center; gap: 14px; }
+.lane-label { width: 230px; font-size: 24px; font-weight: 700; }
+
+/* Icons */
+.ic { width: 44px; height: 44px; }
+.ic-blue { color: var(--blue); }
+.ic-violet { color: var(--violet); }
+.ic-teal { color: var(--teal); }
+.ic-amber { color: var(--amber); }
+.ic-red { color: var(--red); }
+
+/* Big numbers */
+.big { font-family: 'Space Grotesk', Arial, sans-serif; font-size: 112px; font-weight: 700; line-height: 1.0; letter-spacing: -2px; color: var(--blue); }
+
+/* Motion: the plain rule is the finished look */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.rise { animation: rise 520ms cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: calc(var(--i, 0) * 90ms); }
+.fade { animation: fadein 520ms ease-out both; animation-delay: calc(var(--i, 0) * 90ms); }
+</style></head><body>
+<section id="cover" class="alt" style="flex-direction:row; align-items:center; gap:96px; padding:128px;">
+<div class="col" style="flex:1; gap:36px;">
+<p class="eyebrow rise" style="--i:0">PAYTM BUILD FOR INDIA AI HACKATHON · TRACK 3</p>
+<h1 class="rise" style="--i:1">Merchant<br>Success AI</h1>
+<p class="lede rise" style="--i:2; max-width:900px;">An AI teammate that <b style="color:#0E1B33;">closes</b> merchant payment cases end to end, in Tamil or English, by chat or voice.</p>
+<div class="row rise" style="--i:3; gap:16px; align-items:center;">
+<p class="pill auto">Autonomous AI Teammates</p>
+<p class="small">Chennai finale · 15 November 2026</p>
+</div>
+<div class="col rise" style="--i:4; gap:4px; border-left:4px solid #0A5FC2; padding-left:20px;">
+<p class="t">Team Absolute AI</p>
+<p class="small">Navaneethamahavishnu · solo builder</p>
+</div>
+</div>
+<div class="col" style="width:560px; gap:0;">
+<div class="card rise" style="--i:3; flex-direction:row; align-items:center; gap:24px; border-color:#B9A3EA;">
+<x-icon name="Lightbulb" class="ic ic-violet"></x-icon>
+<div class="col" style="gap:4px;"><p class="t">The AI proposes</p><p class="small">Sarvam understands and investigates</p></div>
+</div>
+<div style="display:flex; justify-content:center; padding:10px 0;"><x-shape kind="arrow-down" class="fade" style="--i:4; width:24px; height:40px; background:#9AA7BD;"></x-shape></div>
+<div class="card rise" style="--i:5; flex-direction:row; align-items:center; gap:24px; border-color:#9DC3EE;">
+<x-icon name="Key" class="ic ic-blue"></x-icon>
+<div class="col" style="gap:4px;"><p class="t">The policy engine decides</p><p class="small">Plain rules: auto, approval, escalate</p></div>
+</div>
+<div style="display:flex; justify-content:center; padding:10px 0;"><x-shape kind="arrow-down" class="fade" style="--i:6; width:24px; height:40px; background:#9AA7BD;"></x-shape></div>
+<div class="card rise" style="--i:7; flex-direction:row; align-items:center; gap:24px; border-color:#96D3C7;">
+<x-icon name="Verified" class="ic ic-teal"></x-icon>
+<div class="col" style="gap:4px;"><p class="t">The verifier confirms</p><p class="small">Re-reads the system after every action</p></div>
+</div>
+</div>
+<aside>Open with the problem in one line, then the rule we built around: the AI proposes, the policy engine decides, the verifier confirms. All data and systems in this prototype are synthetic mocks shaped like Paytm’s public payment-gateway APIs.</aside>
+</section>
+<section id="problem">
+<div class="head">
+<p class="eyebrow">THE PROBLEM</p>
+<h2 style="max-width:1500px;">A failed payout or a double charge turns into a ticket and a wait</h2>
+</div>
+<div class="row" style="gap:32px;">
+<div class="card grow rise" style="--i:0;">
+<x-icon name="Warning" class="ic ic-amber"></x-icon>
+<h3>Payout failed</h3>
+<p class="txt">The customer paid, but the money never reached the shop’s bank because of a bank timeout or downtime.</p>
+</div>
+<div class="card grow rise" style="--i:1;">
+<x-icon name="Activity" class="ic ic-red"></x-icon>
+<h3>Charged twice</h3>
+<p class="txt">A customer pays the same bill twice by mistake. Often nobody notices until someone complains.</p>
+</div>
+<div class="card grow rise" style="--i:2;">
+<x-icon name="Chat" class="ic ic-violet"></x-icon>
+<h3>Unclear or risky claims</h3>
+<p class="txt">Vague messages, Tamil voice notes, or a claim on an order that belongs to someone else.</p>
+</div>
+</div>
+<div class="row fade" style="--i:4; align-items:center; gap:24px; background:#FCFDFE; border:2px solid #D3DDEA; border-radius:20px; padding:24px 32px;">
+<p class="pill esc">TODAY</p>
+<p class="txt">Merchant raises a ticket</p>
+<x-shape kind="arrow-right" style="width:40px; height:22px; background:#9AA7BD;"></x-shape>
+<p class="txt">Support checks several systems by hand</p>
+<x-shape kind="arrow-right" style="width:40px; height:22px; background:#9AA7BD;"></x-shape>
+<p class="txt">The merchant waits</p>
+</div>
+<div class="foot"><p class="foot-l">Merchant Success AI</p><p class="pg"></p></div>
+<aside>These are everyday problems for small merchants: a tiffin shop, a mobile store, a hotel. Today each one becomes a support ticket. Don’t quote percentages here; we haven’t measured real ticket volumes.</aside>
+</section>
+<section id="steps" class="alt" style="gap:40px;">
+<div class="head">
+<p class="eyebrow">THE AI TEAMMATE</p>
+<h2>It doesn’t just answer. It closes the case.</h2>
+</div>
+<div class="col" style="gap:24px;">
+<div class="row" style="gap:16px; align-items:center;">
+<div class="card grow rise" style="--i:0; padding:24px; gap:10px;"><p class="pill ai">1 · AI</p><p class="t">Understand</p><p class="small">Tamil or English, chat or voice. Finds the order ID and amount.</p></div>
+<x-shape kind="arrow-right" class="fade" style="--i:1; width:32px; height:18px; background:#9AA7BD;"></x-shape>
+<div class="card grow rise" style="--i:1; padding:24px; gap:10px;"><p class="pill code">2 · CODE</p><p class="t">Verify merchant</p><p class="small">Last 4 digits of phone. 3 wrong tries lock. No lookups before this.</p></div>
+<x-shape kind="arrow-right" class="fade" style="--i:2; width:32px; height:18px; background:#9AA7BD;"></x-shape>
+<div class="card grow rise" style="--i:2; padding:24px; gap:10px;"><p class="pill ai">3 · AI</p><p class="t">Investigate</p><p class="small">Chooses up to 5 read-only lookups across payment systems.</p></div>
+<x-shape kind="arrow-right" class="fade" style="--i:3; width:32px; height:18px; background:#9AA7BD;"></x-shape>
+<div class="card grow rise" style="--i:3; padding:24px; gap:10px;"><p class="pill code">4 · CODE</p><p class="t">Diagnose</p><p class="small">Fixed codes: payout failed, duplicate, settled, not yours.</p></div>
+</div>
+<div class="row" style="gap:16px; align-items:center;">
+<div class="card grow rise" style="--i:4; padding:24px; gap:10px;"><p class="pill code">5 · CODE</p><p class="t">Propose action</p><p class="small">Action and amount copied from evidence, never from the AI.</p></div>
+<x-shape kind="arrow-right" class="fade" style="--i:5; width:32px; height:18px; background:#9AA7BD;"></x-shape>
+<div class="card grow rise" style="--i:5; padding:24px; gap:10px;"><p class="pill auto">6 · POLICY</p><p class="t">Policy decides</p><p class="small">Rules pick: automatic, Ops approval, or escalate.</p></div>
+<x-shape kind="arrow-right" class="fade" style="--i:6; width:32px; height:18px; background:#9AA7BD;"></x-shape>
+<div class="card grow rise" style="--i:6; padding:24px; gap:10px;"><p class="pill code">7 · CODE</p><p class="t">Execute</p><p class="small">Payout retry or refund, with an idempotency key.</p></div>
+<x-shape kind="arrow-right" class="fade" style="--i:7; width:32px; height:18px; background:#9AA7BD;"></x-shape>
+<div class="card grow rise" style="--i:7; padding:24px; gap:10px;"><p class="pill ver">8 · VERIFY</p><p class="t">Verify &amp; reply</p><p class="small">Re-reads the system. A mismatch escalates to a human.</p></div>
+</div>
+</div>
+<div class="foot"><p class="foot-l">Purple = AI · grey = plain code · blue = policy rules · green = verification</p><p class="pg"></p></div>
+<aside>The AI appears in only three places: understanding the message, choosing which read-only lookups to run, and phrasing the reply. Everything that touches money or permissions is plain code. If identity fails, the agent makes zero lookups and escalates.</aside>
+</section>
+<section id="principle" style="background:#DCEBFB; gap:56px;">
+<p class="eyebrow">THE RULE WE BUILT AROUND</p>
+<div class="col" style="gap:8px;">
+<h1 class="rise" style="--i:0;"><span style="color:#6A3DC0;">AI</span> proposes.</h1>
+<h1 class="rise" style="--i:2;"><span style="color:#0A5FC2;">Policy</span> decides.</h1>
+<h1 class="rise" style="--i:4;"><span style="color:#0B6E61;">Verifier</span> confirms.</h1>
+</div>
+<div class="row fade" style="--i:6; gap:48px;">
+<div class="col grow" style="gap:8px;"><p class="t">AI (Sarvam)</p><p class="small" style="color:#3A4762;">Understands, picks read-only lookups, phrases the reply. Never picks whose data, sets an amount or grants permission.</p></div>
+<div class="col grow" style="gap:8px;"><p class="t">Policy engine</p><p class="small" style="color:#3A4762;">Plain Python reading policy.yaml. First matching rule wins; anything unknown escalates.</p></div>
+<div class="col grow" style="gap:8px;"><p class="t">Verifier</p><p class="small" style="color:#3A4762;">After every payout or refund, re-reads the system. If it doesn’t match, the case goes to a human.</p></div>
+</div>
+<aside>This is the one sentence to remember. The model is useful for language and judgement about where to look, but it never holds the keys: permissions are deterministic, and every action is checked by reading the system again.</aside>
+</section>
+<section id="architecture" class="alt" style="gap:40px;">
+<div class="head">
+<p class="eyebrow">ARCHITECTURE</p>
+<h2>One agent, a plain HTTP API, and synthetic Paytm-shaped systems</h2>
+</div>
+<div class="row" style="gap:24px; align-items:center; flex:1;">
+<div class="card rise" style="--i:0; width:430px; gap:16px;">
+<x-icon name="Globe" class="ic ic-blue"></x-icon>
+<h3>Web app</h3>
+<p class="small">React + Vite, one page on the projector</p>
+<p class="pill code" style="align-self:stretch;">Merchant / customer chat</p>
+<p class="pill code" style="align-self:stretch;">Live agent timeline</p>
+<p class="pill code" style="align-self:stretch;">Ops approval queue</p>
+</div>
+<x-shape kind="arrow-right" class="fade" style="--i:1; width:48px; height:26px; background:#8D9AB2;"></x-shape>
+<div class="col" style="width:450px; gap:0;">
+<div class="card rise" style="--i:2; gap:8px;">
+<p class="t">FastAPI</p>
+<p class="small">Polling timeline, Ops token, rate limits, CORS, size limits</p>
+</div>
+<div style="display:flex; justify-content:center; padding:10px 0;"><x-shape kind="arrow-down" class="fade" style="--i:3; width:26px; height:44px; background:#8D9AB2;"></x-shape></div>
+<div class="card rise" style="--i:4; gap:8px; border-color:#0A5FC2; background:#F2F7FE;">
+<p class="t">LangGraph agent</p>
+<p class="small">16-node state machine. Pauses for Ops or the customer and resumes from a saved checkpoint.</p>
+</div>
+</div>
+<x-shape kind="arrow-right" class="fade" style="--i:5; width:48px; height:26px; background:#8D9AB2;"></x-shape>
+<div class="col grow" style="gap:14px;">
+<div class="card rise" style="--i:5; padding:18px 24px; gap:4px; border-color:#B9A3EA;"><p class="t">Sarvam AI</p><p class="small">sarvam-105b · 105b-conversations · Saaras v4</p></div>
+<div class="card rise" style="--i:6; padding:18px 24px; gap:4px; border-color:#9DC3EE;"><p class="t">Policy engine</p><p class="small">policy.yaml with rule IDs, validated at load</p></div>
+<div class="card rise" style="--i:7; padding:18px 24px; gap:4px;"><p class="t">Mock payment systems</p><p class="small">Paytm PG response shapes, synthetic data</p></div>
+<div class="card rise" style="--i:8; padding:18px 24px; gap:4px;"><p class="t">SQLite</p><p class="small">Records, masked audit log, checkpoints</p></div>
+<div class="card rise" style="--i:9; padding:18px 24px; gap:4px;"><p class="t">Mini-RAG</p><p class="small">ChromaDB over 8 docs, for citations only</p></div>
+</div>
+</div>
+<aside>Keep it simple on purpose: one process, SQLite, no multi-agent setup. The web app only talks HTTP, so a mobile app could reuse the same API. All payment systems are mocks; nothing calls real Paytm APIs.</aside>
+</section>
+<section id="graph" style="gap:40px;">
+<div class="head">
+<p class="eyebrow">THE STATE MACHINE</p>
+<h2>Every case follows explicit nodes and edges</h2>
+</div>
+<div class="lane rise" style="--i:0;">
+<p class="node node-ai">intake</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node">verify_merchant</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node node-ai">investigate</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node">diagnose</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node">propose_action</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node node-auto" style="font-weight:700;">policy_gate</p>
+</div>
+<div class="col" style="gap:20px; padding-left:24px; border-left:4px solid #D3DDEA;">
+<div class="lane rise" style="--i:2;">
+<p class="lane-label" style="color:#0A5FC2;">Automatic</p>
+<p class="node node-auto">execute</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node node-ver">verify_outcome</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node node-ai">respond</p>
+</div>
+<div class="lane rise" style="--i:3;">
+<p class="lane-label" style="color:#9E4E00;">Ops approval</p>
+<p class="node node-appr">prepare_approval</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node node-appr">human_approval</p>
+<p class="pill appr">PAUSE</p>
+<p class="small">approve: execute as above · reject: ticket + reply</p>
+</div>
+<div class="lane rise" style="--i:4;">
+<p class="lane-label" style="color:#B01F2C;">Escalate</p>
+<p class="node node-esc">escalate</p>
+<p class="small">ticket for a specialist, generic reply that reveals nothing</p>
+</div>
+<div class="lane rise" style="--i:5;">
+<p class="lane-label" style="color:#6A3DC0;">Customer (Case 4)</p>
+<p class="node">ask_customer</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node">customer_decision</p>
+<p class="pill appr">PAUSE</p>
+<p class="small">refund: policy_gate · keep: notify_parties</p>
+</div>
+</div>
+<div class="foot"><p class="foot-l">PAUSE = LangGraph interrupt(): state saved in a SQLite checkpoint, resumes even after a restart</p><p class="pg"></p></div>
+<aside>Purple nodes use the AI; everything else is code. policy_gate is the only place the auto / approval / escalate decision is made. Unverified identity skips investigate entirely and goes straight to the policy gate, which escalates under G-02.</aside>
+</section>
+<section id="policy" class="alt" style="gap:40px;">
+<div class="head">
+<p class="eyebrow">POLICY TIERS</p>
+<h2>Rules decide, with an ID you can point to</h2>
+</div>
+<table class="rise" style="--i:1; font-size:28px; color:#0E1B33; font-family:'Inter', Arial, sans-serif;">
+<tr><th style="width:15%;">Rule</th><th style="width:60%;">Applies when</th><th style="width:25%;">Decision</th></tr>
+<tr style="background:#E6F0FC;"><td>R-07</td><td>Payout failed on a bank timeout or downtime, first retry, up to ₹50,000</td><td style="color:#0A5FC2;">Automatic</td></tr>
+<tr style="background:#FFF1E0;"><td>R-10</td><td>The same payout retry, above ₹50,000</td><td style="color:#9E4E00;">Ops approval</td></tr>
+<tr style="background:#FFF1E0;"><td>R-08</td><td>A second retry of the same payout</td><td style="color:#9E4E00;">Ops approval</td></tr>
+<tr style="background:#E6F0FC;"><td>R-21</td><td>Verified duplicate charge, refund up to ₹5,000</td><td style="color:#0A5FC2;">Automatic</td></tr>
+<tr style="background:#FFF1E0;"><td>R-22</td><td>Verified duplicate charge, refund up to ₹1,00,000</td><td style="color:#9E4E00;">Ops approval</td></tr>
+<tr style="background:#FCE8EA;"><td>R-09, R-23</td><td>Anything else: not transient, not verified, or too large</td><td style="color:#B01F2C;">Escalate</td></tr>
+<tr style="background:#FCE8EA;"><td>G-01 to G-06</td><td>Not your order, identity failed, risk flag, records disagree, systems down, unknown diagnosis</td><td style="color:#B01F2C;">Escalate before any action</td></tr>
+</table>
+<div class="foot"><p class="foot-l">policy/policy.yaml · first matching rule wins · validated at load · a limit change is one line</p><p class="pg"></p></div>
+<aside>The AI never reads this file to decide anything. Evidence signals such as duplicate_verified are set by code from tool results. Unknown actions or an unmatched rule fail closed into escalation. Thresholds are illustrative for the demo.</aside>
+</section>
+<section id="cases" style="gap:40px;">
+<div class="head">
+<p class="eyebrow">FOUR DEMO CASES</p>
+<h2>Fix it, ask a human, stop, or act before anyone complains</h2>
+</div>
+<div class="row" style="gap:24px;">
+<div class="card grow rise" style="--i:0; padding:28px; gap:14px; border-top:8px solid #0A5FC2;">
+<p class="pill code">CASE 1 · TAMIL</p>
+<p class="t">Lakshmi Tiffin Centre</p>
+<p class="small">“My ₹2,400 for ORD-1001 hasn’t reached my bank” (in Tamil)</p>
+<p class="small"><b style="color:#0E1B33;">Found:</b> payout failed on a bank timeout</p>
+<p class="pill auto">R-07 · Automatic</p>
+<p class="small">Retried, verified, Tamil reply with the UTR</p>
+</div>
+<div class="card grow rise" style="--i:1; padding:28px; gap:14px; border-top:8px solid #9E4E00;">
+<p class="pill code">CASE 2</p>
+<p class="t">Arun Mobiles</p>
+<p class="small">“Customer was charged twice for ORD-2001, ₹12,000”</p>
+<p class="small"><b style="color:#0E1B33;">Found:</b> ORD-2002, same UPI ID and invoice, 90 s apart</p>
+<p class="pill appr">R-22 · Ops approval</p>
+<p class="small">Ops approves, refund verified, refund ID sent</p>
+</div>
+<div class="card grow rise" style="--i:2; padding:28px; gap:14px; border-top:8px solid #B01F2C;">
+<p class="pill code">CASE 3</p>
+<p class="t">Sri Balaji Stores</p>
+<p class="small">“ORD-4001 for ₹48,000 never reached my account”</p>
+<p class="small"><b style="color:#0E1B33;">Found:</b> the order belongs to another merchant</p>
+<p class="pill esc">G-01 · Escalate</p>
+<p class="small">Ticket raised; the reply reveals nothing</p>
+</div>
+<div class="card grow rise" style="--i:3; padding:28px; gap:14px; border-top:8px solid #6A3DC0;">
+<p class="pill ai">CASE 4 · PROACTIVE</p>
+<p class="t">Kumar Hotel</p>
+<p class="small">No complaint: a diner paid the same ₹650 bill twice</p>
+<p class="small"><b style="color:#0E1B33;">Found:</b> same UPI ID and invoice, 70 s apart</p>
+<p class="pill auto">Customer consent · R-21</p>
+<p class="small">Refunded, verified, both sides notified</p>
+</div>
+</div>
+<div class="foot"><p class="foot-l">15 situations handled in total: 10 closed by the agent, 5 safely handed to a human</p><p class="pg"></p></div>
+<aside>Walk left to right: automatic, human approval, safe stop, proactive. Case 3 matters as much as Case 1: knowing when to stop is part of being a good teammate. In Case 3 the reply never says the order exists.</aside>
+</section>
+<section id="demo" class="alt" style="gap:40px;">
+<div class="head">
+<p class="eyebrow">THE LIVE APP</p>
+<h2>Every step is visible on a live timeline</h2>
+</div>
+<div class="row" style="gap:48px;">
+<div class="col rise" style="--i:0; gap:16px;">
+<img src="images/case2-ops-approval.png" alt="App screenshot for Case 2: merchant chat, agent timeline ending in Policy R-22 approval, and an Ops card to approve the ₹12,000 refund with its evidence hash" style="width:808px; height:481px; object-fit:contain; border-radius:16px; border:2px solid #C5D2E3; background:#FCFDFE;">
+<p class="small"><b style="color:#0E1B33;">Case 2:</b> the timeline stops at R-22, and Ops sees the evidence pack and its hash</p>
+</div>
+<div class="col rise" style="--i:2; gap:16px;">
+<img src="images/case4-customer-ask.png" alt="App screenshot for Case 4: the customer’s phone asks Keep both or Refund one, while the timeline shows the duplicate check and a heads-up to the merchant" style="width:808px; height:481px; object-fit:contain; border-radius:16px; border:2px solid #C5D2E3; background:#FCFDFE;">
+<p class="small"><b style="color:#0E1B33;">Case 4:</b> the customer is asked to keep both or refund one; the merchant gets a heads-up</p>
+</div>
+</div>
+<div class="foot"><p class="foot-l">Left: merchant or customer phone · middle: agent timeline · right: Ops approvals</p><p class="pg"></p></div>
+<aside>Switch to the live app here. Purple timeline rows are AI steps, grey rows are code, and the coloured rows show policy decisions and guardrails.</aside>
+</section>
+<section id="double" style="gap:40px;">
+<div class="head">
+<p class="eyebrow">CASE 4 · PROACTIVE</p>
+<h2>A double payment is caught before anyone complains</h2>
+</div>
+<div class="row" style="gap:16px; align-items:center;">
+<div class="card grow rise" style="--i:0; gap:10px;"><x-icon name="Lightning" class="ic ic-violet"></x-icon><p class="t">System event</p><p class="small">Duplicate payment detected on ORD-6002 at Kumar Hotel</p></div>
+<x-shape kind="arrow-right" class="fade" style="--i:1; width:40px; height:22px; background:#8D9AB2;"></x-shape>
+<div class="card grow rise" style="--i:1; gap:10px;"><x-icon name="Search" class="ic ic-blue"></x-icon><p class="t">Code checks</p><p class="small">Same UPI ID, same bill, same ₹650, 70 seconds apart</p></div>
+<x-shape kind="arrow-right" class="fade" style="--i:2; width:40px; height:22px; background:#8D9AB2;"></x-shape>
+<div class="card grow rise" style="--i:2; gap:10px; border-color:#F0BF86;"><x-icon name="Users" class="ic ic-amber"></x-icon><p class="t">Ask the customer</p><p class="small">“Keep both” or “Refund one”. The merchant gets a heads-up.</p></div>
+</div>
+<div class="col" style="gap:20px;">
+<div class="lane rise" style="--i:4; background:#E6F0FC; border-radius:16px; padding:20px 24px;">
+<p class="pill auto" style="width:300px;">Refund one</p>
+<p class="node node-auto">policy: R-21 auto ≤ ₹5,000, R-22 Ops above</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node node-auto">refund</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node node-ver">verify</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node">notify both</p>
+</div>
+<div class="lane rise" style="--i:5; background:#E4E9F1; border-radius:16px; padding:20px 24px;">
+<p class="pill code" style="width:300px;">Keep both or no reply</p>
+<p class="node">no money moves</p>
+<x-shape kind="arrow-right" style="width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<p class="node">notify both</p>
+</div>
+</div>
+<div class="foot"><p class="foot-l">Consent is bound to a one-time token and the evidence hash · an invalid answer means keep · only Ops can record “no reply”</p><p class="pg"></p></div>
+<aside>Paying twice is sometimes intentional, so the agent asks rather than refunding on its own. Silence or an invalid answer never moves money. A ₹7,200 duplicate follows the same path, but the refund also needs Ops approval under R-22.</aside>
+</section>
+<section id="guardrails" class="alt" style="gap:40px;">
+<div class="head">
+<p class="eyebrow">GUARDRAILS</p>
+<h2>Nine guardrails, all enforced in code</h2>
+</div>
+<div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px;">
+<div class="card rise" style="--i:0; flex-direction:row; gap:18px; padding:24px;"><x-icon name="Lock" class="ic ic-blue"></x-icon><div class="col" style="gap:6px;"><p class="t">Identity first</p><p class="small">4-digit PIN, locks after 3 tries; no lookups before it</p></div></div>
+<div class="card rise" style="--i:1; flex-direction:row; gap:18px; padding:24px;"><x-icon name="Key" class="ic ic-blue"></x-icon><div class="col" style="gap:6px;"><p class="t">AI never picks merchant</p><p class="small">Merchant ID comes from login; the model’s ID is dropped</p></div></div>
+<div class="card rise" style="--i:2; flex-direction:row; gap:18px; padding:24px;"><x-icon name="Search" class="ic ic-blue"></x-icon><div class="col" style="gap:6px;"><p class="t">Read-only investigation</p><p class="small">Max 5 lookups; action tools are never shown to the AI</p></div></div>
+<div class="card rise" style="--i:3; flex-direction:row; gap:18px; padding:24px;"><x-icon name="Link" class="ic ic-teal"></x-icon><div class="col" style="gap:6px;"><p class="t">Idempotent money moves</p><p class="small">Every payout and refund carries an idempotency key</p></div></div>
+<div class="card rise" style="--i:4; flex-direction:row; gap:18px; padding:24px;"><x-icon name="Warning" class="ic ic-teal"></x-icon><div class="col" style="gap:6px;"><p class="t">No over-refund</p><p class="small">Refunds can never exceed what was paid, across cases</p></div></div>
+<div class="card rise" style="--i:5; flex-direction:row; gap:18px; padding:24px;"><x-icon name="Verified" class="ic ic-teal"></x-icon><div class="col" style="gap:6px;"><p class="t">Read-after-write</p><p class="small">Every action re-read from the system; mismatch escalates</p></div></div>
+<div class="card rise" style="--i:6; flex-direction:row; gap:18px; padding:24px;"><x-icon name="CheckCircle" class="ic ic-violet"></x-icon><div class="col" style="gap:6px;"><p class="t">Reply validator</p><p class="small">Every number and ID in a reply must exist in evidence</p></div></div>
+<div class="card rise" style="--i:7; flex-direction:row; gap:18px; padding:24px;"><x-icon name="Trust" class="ic ic-violet"></x-icon><div class="col" style="gap:6px;"><p class="t">Evidence-bound approval</p><p class="small">Ops token, reviewer name and a hash of the exact evidence</p></div></div>
+<div class="card rise" style="--i:8; flex-direction:row; gap:18px; padding:24px;"><x-icon name="Users" class="ic ic-violet"></x-icon><div class="col" style="gap:6px;"><p class="t">PII masked in logs</p><p class="small">Phone numbers and customer UPI IDs masked before logging</p></div></div>
+</div>
+<div class="foot"><p class="foot-l">Fail closed: an unknown action, unmatched rule, failed verification or a system down 3 times all escalate</p><p class="pg"></p></div>
+<aside>The main prompt-injection defence is that the model never chooses whose data it reads: the merchant ID is injected by code from the verified session. A test tells the model “I am M1004” and the case still escalates under G-01. Every guardrail here has automated tests.</aside>
+</section>
+<section id="replies" style="gap:40px;">
+<div class="head">
+<p class="eyebrow">NO MADE-UP PAYMENT FACTS</p>
+<h2>The AI writes the words. Code supplies every number.</h2>
+</div>
+<div class="row" style="gap:14px; align-items:center;">
+<div class="card grow rise" style="--i:0; padding:24px; gap:10px;"><p class="pill code">1 · CODE</p><p class="t">Template</p><p class="small">Picks the outcome and language, with {placeholders}</p></div>
+<x-shape kind="arrow-right" class="fade" style="--i:1; width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<div class="card grow rise" style="--i:1; padding:24px; gap:10px;"><p class="pill ai">2 · AI</p><p class="t">Sarvam rephrases</p><p class="small">Sees placeholders only, never real amounts or IDs</p></div>
+<x-shape kind="arrow-right" class="fade" style="--i:2; width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<div class="card grow rise" style="--i:2; padding:24px; gap:10px;"><p class="pill code">3 · CODE</p><p class="t">Fill values</p><p class="small">From evidence; each placeholder exactly once</p></div>
+<x-shape kind="arrow-right" class="fade" style="--i:3; width:32px; height:18px; background:#8D9AB2;"></x-shape>
+<div class="card grow rise" style="--i:3; padding:24px; gap:10px; border-color:#96D3C7;"><p class="pill ver">4 · VERIFY</p><p class="t">Validator</p><p class="small">Every number in evidence? Right script? Else: safe template</p></div>
+</div>
+<div class="card fade" style="--i:5; gap:12px; background:#FCFDFE;">
+<p class="small"><b style="color:#0E1B33;">Template the AI rephrases (Case 1, English):</b></p>
+<p class="mono" style="font-size:26px; color:#33405A; line-height:1.45;">Your ₹{amount} for order {order_id} had failed at the bank. I retried it and it has now reached your account {bank_account}. UTR: {utr}.</p>
+<p class="small"><b style="color:#0E1B33;">Code fills:</b> ₹2,400 · ORD-1001 · XXXX4521 · the UTR read back from the payout system</p>
+</div>
+<div class="foot"><p class="foot-l">Seen in testing: Sarvam invented a date and once answered in Malayalam; the validator caught both</p><p class="pg"></p></div>
+<aside>Because the AI only ever sees placeholders, the input is the same for every case with the same outcome and language, which also makes replies cacheable and deterministic for the demo. Live Sarvam kept the placeholders 8 out of 8 times in Tamil and English.</aside>
+</section>
+<section id="sarvam" class="alt" style="gap:40px;">
+<div class="head">
+<p class="eyebrow">TAMIL VOICE WITH SARVAM</p>
+<h2>Built for how merchants actually talk</h2>
+</div>
+<div class="row" style="gap:40px; align-items:stretch;">
+<div class="card rise" style="--i:0; width:700px; gap:20px; border-color:#B9A3EA; justify-content:center;">
+<p class="pill ai">VOICE NOTE, TRANSCRIBED</p>
+<p class="ta" style="font-size:40px; line-height:1.5; color:#0E1B33; font-weight:600;">என் ORD-1001 ₹2,400 பணம் இன்னும் என் வங்கிக்கு வரவில்லை</p>
+<p class="small">“My ₹2,400 for ORD-1001 hasn’t reached my bank yet.”</p>
+<p class="small">Spoken order numbers such as <span class="ta">“ஓஆர்டி 1001”</span> are normalised to ORD-1001 by code.</p>
+</div>
+<div class="col grow" style="gap:20px;">
+<div class="card rise" style="--i:1; flex-direction:row; gap:20px; padding:24px;"><x-icon name="Play" class="ic ic-violet"></x-icon><div class="col" style="gap:6px;"><p class="t">Saaras v4 · speech to text</p><p class="small">Tamil and code-mixed audio to text in about 0.5 s</p></div></div>
+<div class="card rise" style="--i:2; flex-direction:row; gap:20px; padding:24px;"><x-icon name="Search" class="ic ic-violet"></x-icon><div class="col" style="gap:6px;"><p class="t">sarvam-105b · understand and investigate</p><p class="small">Structured intake and read-only tool calls</p></div></div>
+<div class="card rise" style="--i:3; flex-direction:row; gap:20px; padding:24px;"><x-icon name="Chat" class="ic ic-violet"></x-icon><div class="col" style="gap:6px;"><p class="t">sarvam-105b-conversations · reply</p><p class="small">Tamil or English reply in about 0.2 s, script checked</p></div></div>
+</div>
+</div>
+<div class="foot"><p class="foot-l">The Sarvam key stays on the server · the demo sample voice was generated with Bulbul v3</p><p class="pg"></p></div>
+<aside>We split models by job: the larger reasoning model for understanding and tool calls, and the fast conversational model for replies, because reasoning tokens on the big model sometimes used up the reply budget. Voice needs internet; typed demos are cached.</aside>
+</section>
+<section id="numbers" style="gap:40px;">
+<div class="head">
+<p class="eyebrow">PROOF</p>
+<h2>Tested for reliability, not just a happy path</h2>
+</div>
+<div class="row" style="gap:24px;">
+<div class="card grow rise" style="--i:0; padding:28px; gap:12px;"><p class="big">165</p><p class="txt">automated tests pass, with the AI mocked so they are deterministic</p></div>
+<div class="card grow rise" style="--i:1; padding:28px; gap:12px;"><p class="big">150/150</p><p class="txt">repeat runs pass: 15 scenarios × 10, with cached Sarvam answers</p></div>
+<div class="card grow rise" style="--i:2; padding:28px; gap:12px;"><p class="big" style="color:#0B6E61;">300/300</p><p class="txt">chaos runs with 25% of system calls failing: no crash, never a double payout or refund</p></div>
+</div>
+<div class="col fade" style="--i:4; gap:14px;">
+<p class="t">15 situations handled</p>
+<div class="row" style="gap:6px; height:64px;">
+<div style="flex:10; background:#0A5FC2; border-radius:12px 0 0 12px; display:flex; align-items:center; padding-left:24px;"><p style="font-size:26px; font-weight:700; color:#F6F8FB;">10 closed by the agent</p></div>
+<div style="flex:5; background:#FFD9AE; border-radius:0 12px 12px 0; display:flex; align-items:center; padding-left:24px;"><p style="font-size:26px; font-weight:700; color:#6E3500;">5 handed to a human</p></div>
+</div>
+</div>
+<div class="foot"><p class="foot-l">Speed: live Sarvam 9–17 s per case · demo cache about 0.03 s · reply about 0.2 s</p><p class="pg"></p></div>
+<aside>Be precise: the 150 repeat runs replay cached Sarvam answers, so they prove the code is reliable, not that the model always understands. The chaos test randomly fails a quarter of system calls and checks money safety: never more than one refund per transaction and never more than one payout retry.</aside>
+</section>
+<section id="next" class="alt" style="gap:40px;">
+<div class="head">
+<p class="eyebrow">PATH TO PRODUCTION</p>
+<h2>Swap the adapters, keep the agent and the guardrails</h2>
+</div>
+<div class="row" style="gap:16px; align-items:stretch;">
+<div class="card grow rise" style="--i:0; gap:16px;">
+<p class="pill code">TODAY · PROTOTYPE</p>
+<ul class="txt" style="display:flex; flex-direction:column; gap:10px; padding-left:32px;">
+<li>Synthetic systems shaped like Paytm PG APIs</li>
+<li>SQLite, one process</li>
+<li>Demo-grade customer identity</li>
+</ul>
+</div>
+<div style="display:flex; align-items:center;"><x-shape kind="arrow-right" class="fade" style="--i:1; width:40px; height:22px; background:#8D9AB2;"></x-shape></div>
+<div class="card grow rise" style="--i:2; gap:16px; border-color:#9DC3EE;">
+<p class="pill auto">NEXT · PILOT</p>
+<ul class="txt" style="display:flex; flex-direction:column; gap:10px; padding-left:32px;">
+<li>Real API adapters, read-only first</li>
+<li>Real sign-in for merchants, customers and Ops</li>
+<li>Postgres, a job queue, monitoring</li>
+</ul>
+</div>
+<div style="display:flex; align-items:center;"><x-shape kind="arrow-right" class="fade" style="--i:3; width:40px; height:22px; background:#8D9AB2;"></x-shape></div>
+<div class="card grow rise" style="--i:4; gap:16px; border-color:#96D3C7;">
+<p class="pill ver">THEN · SCALE</p>
+<ul class="txt" style="display:flex; flex-direction:column; gap:10px; padding-left:32px;">
+<li>Turn on actions rule by rule</li>
+<li>Evals on real merchant phrasing</li>
+<li>More languages and case types</li>
+</ul>
+</div>
+</div>
+<div class="foot"><p class="foot-l">The same pattern fits claims or loan servicing: AI investigates, policy decides, verifier confirms</p><p class="pg"></p></div>
+<aside>Be honest when asked what is not production-ready: the payment systems are mocks, customer identity is a UPI ID instead of an app session, and it runs as one process on SQLite. Going live means replacing the mock functions with real adapters; the agent, policy engine and checks stay the same.</aside>
+</section>
+<section id="close" style="background:#DCEBFB; justify-content:center; gap:48px; padding:128px;">
+<p class="eyebrow rise" style="--i:0;">MERCHANT SUCCESS AI</p>
+<h1 class="rise" style="--i:1;">Thank you</h1>
+<p class="lede rise" style="--i:2; color:#2E3B55; max-width:1400px;">An AI teammate that closes merchant payment cases: <span style="color:#6A3DC0;">the AI proposes</span>, <span style="color:#0A5FC2;">the policy engine decides</span>, <span style="color:#0B6E61;">the verifier confirms</span>.</p>
+<div class="row rise" style="--i:3; gap:16px; flex-wrap:wrap;">
+<p class="pill auto" style="background:#FCFDFE;">165 tests</p>
+<p class="pill auto" style="background:#FCFDFE;">150/150 repeat runs</p>
+<p class="pill ver" style="background:#FCFDFE;">300/300 chaos runs</p>
+<p class="pill ai" style="background:#FCFDFE;">Tamil voice with Sarvam</p>
+</div>
+<p class="small rise" style="--i:4; color:#3A4762;">Questions welcome · Team Absolute AI · Navaneethamahavishnu · all data and systems shown are synthetic</p>
+<aside>Close on the one sentence, then invite questions. The Q&amp;A sheet in DEMO_SCRIPT.md has short answers for the likely ones.</aside>
+</section>
+<script>
+function fit(){ if (matchMedia('print').matches) return; var z = Math.min(1, (innerWidth - 32) / 1920); document.querySelectorAll('body > section').forEach(function(s){ s.style.zoom = z; }); }
+addEventListener('resize', fit); fit();
+</script>
+</body></html>
